@@ -1,0 +1,19 @@
+#ifndef _IDS_H_
+#define _IDS_H_
+
+#include <wx/wx.h>
+
+enum 
+{
+	ID_LAST_USED = wxID_HIGHEST,
+	ID_OPENIMAGE,
+	ID_IMAGELIST,
+	ID_IMAGERENAME,
+	ID_IMAGEREMOVE,
+	ID_IMAGEPROPERTIES,
+	ID_SAVEBITMAPS,
+	ID_PROPWSCALE,
+	ID_PROPHSCALE,
+};
+
+#endif
