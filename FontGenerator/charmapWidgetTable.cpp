@@ -15,6 +15,18 @@ CharMapGridTable::~CharMapGridTable()
 
 }
 
+bool CharMapGridTable::IsRangeEmpty(wxUint32 start, wxUint32 end)
+{
+	for (std::set<CodePage>::const_iterator it = m_charmap.Begin();
+		it != m_charmap.End(); ++it) {
+		if ((start >= it->GetRangeStart() && start <= it->GetRangeEnd()) ||
+			(end >= it->GetRangeStart() && end <= it->GetRangeEnd())) {
+			return false;
+		}
+	}
+	return true;
+}
+
 std::pair<int, int> CharMapGridTable::GetCodePageRange(const CodePage &codePage)
 {
 	int start = -1;
@@ -439,12 +451,15 @@ void CharGridRenderer::LoadFont(wxString family, wxString style, float size, wxU
 }
 
 CharGridEditor::CharGridEditor() :
-wxGridCellEditor()
+wxGridCellEditor(), m_lastCol(0), m_lastRow(0)
 {
 }
 
 void CharGridEditor::BeginEdit(int row, int col, wxGrid *grid)
 {
+	m_oldValue = grid->GetCellValue(row, col);
+	m_lastRow = row; 
+	m_lastCol = col;
 	wxTextCtrl *text = dynamic_cast<wxTextCtrl *>(m_control);
 
 	text->SetValue(grid->GetTable()->GetValue(row, col));
@@ -455,7 +470,13 @@ void CharGridEditor::BeginEdit(int row, int col, wxGrid *grid)
 
 wxGridCellEditor * CharGridEditor::Clone() const
 {
-	return new CharGridEditor();
+	CharGridEditor *clone = new CharGridEditor();
+	clone->m_lastCol = m_lastCol;
+	clone->m_lastRow = m_lastRow;
+	clone->m_lastEdit = m_lastEdit;
+	clone->m_oldValue = m_oldValue;
+	clone->m_panel = m_panel;
+	return clone;
 }
 
 void CharGridEditor::Create(wxWindow *parent, wxWindowID id, wxEvtHandler *evtHandler)
@@ -473,12 +494,25 @@ void CharGridEditor::Create(wxWindow *parent, wxWindowID id, wxEvtHandler *evtHa
 
 bool CharGridEditor::EndEdit(int row, int col, const wxGrid *grid, const wxString &oldval, wxString *newval)
 {
-	return false;
+	const CharMapWidget *widget = dynamic_cast<const CharMapWidget *>(grid);
+	if (widget == NULL || !widget->IsTitleRow(row) || m_control == NULL || 
+		m_lastCol !=col || m_lastRow != row) {
+		return false;
+	}
+	wxTextCtrl *text = dynamic_cast<wxTextCtrl *>(m_control);
+	wxASSERT(text != NULL);
+	m_lastEdit = text->GetValue();
+	*newval = m_lastEdit;
+	return true;
 }
 
 void CharGridEditor::ApplyEdit(int row, int col, wxGrid *grid)
 {
-
+	if (m_lastCol != col || m_lastRow != row) {
+		return;
+	}
+	CharMapWidget *widget = dynamic_cast<CharMapWidget *>(grid);
+	widget->GetCharmapTable()->GetCodePage(row)->SetName(m_lastEdit);
 }
 
 void CharGridEditor::HandleReturn(wxKeyEvent &event)
@@ -493,7 +527,9 @@ void CharGridEditor::Reset()
 
 wxString CharGridEditor::GetValue() const
 {
-	return wxString();
+	wxTextCtrl *text = dynamic_cast<wxTextCtrl *>(m_control);
+	wxASSERT(text != NULL);
+	return text->GetValue();
 }
 
 CharGridEditor::~CharGridEditor()

@@ -10,9 +10,6 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FontGenerator", "FontGenerator\FontGenerator.vcxproj", "{2A5D5DD1-1E61-4FC2-83EC-2CF01141DFC7}"
 EndProject
 Global
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
 		Release|Win32 = Release|Win32

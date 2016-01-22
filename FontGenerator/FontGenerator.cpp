@@ -7,6 +7,7 @@
 #include <wx/progdlg.h>
 #include <wx/dnd.h>
 #include <wx/msgdlg.h>
+#include <wx/numdlg.h>
 #include "types.h"
 
 #include <ft2build.h>
@@ -439,7 +440,27 @@ void FontGeneratorFrame::OnRenameCharmapClick(wxCommandEvent &evt)
 
 void FontGeneratorFrame::OnSetCharmapOffset(wxCommandEvent &evt)
 {
-
+	wxVariant *variant = dynamic_cast<wxVariant *>(evt.GetEventUserData());
+	wxASSERT(variant->GetType() == wxT("void*"));
+	CharMapWidget &widget = *(CharMapWidget *)variant->GetVoidPtr();
+	int selectedRow = widget.GetCursorRow();
+	wxASSERT(widget.GetCharmapTable()->IsTitleRow(selectedRow));
+	CodePage *page = widget.GetCharmapTable()->GetCodePage(selectedRow);
+	wxASSERT(page != NULL);
+	int pageSize = page->GetSize();
+	int answer = wxGetNumberFromUser("Set the starting offset of the codepage.", "Starting offset:", 
+		"Set offset", page->GetRangeStart(), 0, INT32_MAX - pageSize, this);
+	if (answer != -1) {
+		CodePage pageBackup = *page;
+		widget.GetCharmapTable()->RemoveCodePage(*page);
+		if (!widget.GetCharmapTable()->IsRangeEmpty(answer, answer + pageSize - 1)) {
+			wxMessageBox(_("Could not change offset, because there is no space at the location specified."), _("Error"));
+		}
+		else {
+			pageBackup.Shift(answer - pageBackup.GetRangeStart());
+		}
+		widget.AddCodePage(pageBackup);
+	}
 }
 
 void FontGeneratorFrame::OnOpenFont(wxCommandEvent &evt)

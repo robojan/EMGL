@@ -59,6 +59,12 @@ CharMapGridTable * CharMapWidget::GetCharmapTable()
 	return m_table;
 }
 
+bool CharMapWidget::IsTitleRow(int row) const
+{
+	wxASSERT(m_table != NULL);
+	return m_table->IsTitleRow(row);
+}
+
 void CharMapWidget::OnRangeSelect(wxGridRangeSelectEvent &evt)
 {
 	for (int r = evt.GetTopRow(); r > 0 && r <= evt.GetBottomRow(); r++) {

@@ -70,6 +70,7 @@ public:
 	wxUint32 GetRangeStart() const;
 	wxUint32 GetRangeEnd() const;
 	CharMapEntry &at(wxUint32 i);
+	void Shift(int shift);
 
 	bool operator<(const CodePage &rhs) const;
 	bool operator>(const CodePage &rhs) const;
@@ -79,7 +80,6 @@ public:
 
 
 	CharMapEntry *GetCharMapEntry(wxUint32 code);
-
 private:
 	std::map<unsigned int, CharMapEntry> m_map;
 	wxUint32 m_start;

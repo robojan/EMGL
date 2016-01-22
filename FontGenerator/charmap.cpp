@@ -224,6 +224,25 @@ CharMapEntry *CodePage::GetCharMapEntry(wxUint32 code)
 	return &m_map.at(code);
 }
 
+void CodePage::Shift(int shift)
+{
+	if (shift < 0) {
+		wxUint32 negShift = -shift;
+		if (negShift > m_start) {
+			// Cannot shift this amount
+			return;
+		}
+	}
+	m_start += shift;
+	m_end += shift;
+	std::map<unsigned int, CharMapEntry> newMap;
+	for (std::map<unsigned int, CharMapEntry>::const_iterator it = m_map.cbegin();
+		it != m_map.cend(); it++) {
+		newMap[it->first + shift] = it->second;
+	}
+	m_map.swap(newMap);
+}
+
 CharMapEntry & CodePage::at(wxUint32 i)
 {
 	return m_map.at(i);

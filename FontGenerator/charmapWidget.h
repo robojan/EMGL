@@ -42,6 +42,9 @@ protected:
 	virtual ~CharGridEditor();
 private:
 	wxPanel *m_panel;
+	wxString m_lastEdit;
+	wxString m_oldValue;
+	int m_lastRow, m_lastCol;
 };
 
 class CharMapGridTable : public wxGridTableBase
@@ -89,7 +92,7 @@ public:
 	CodePage *GetCodePage(int row);
 	int GetCodePageStartRow(int row);
 	wxUint32 GetCharMapCode(int row, int col);
-
+	bool IsRangeEmpty(wxUint32 start, wxUint32 end);
 private:
 
 	CharMap m_charmap;
@@ -136,6 +139,7 @@ public:
 	void AddCharmap(const CharMap &map);
 	CharMapEntry *GetEntry(int row, int col);
 	CharMapGridTable *GetCharmapTable();
+	bool IsTitleRow(int row) const;
 
 private:
 	void OnRangeSelect(wxGridRangeSelectEvent &evt);
