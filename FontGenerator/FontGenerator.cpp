@@ -408,6 +408,12 @@ void FontGeneratorFrame::OnRemoveGlyph(wxCommandEvent &evt)
 	wxVariant *variant = dynamic_cast<wxVariant *>(evt.GetEventUserData());
 	wxASSERT(variant->GetType() == wxT("void*"));
 	CharMapWidget &widget =	*(CharMapWidget *)variant->GetVoidPtr();
+	wxGridCellCoordsArray &cells(widget.GetAllSelectedCells());
+	cells.push_back(wxGridCellCoords(widget.GetGridCursorRow(), 
+		widget.GetGridCursorCol()));
+	for (size_t i = 0; i < cells.size(); ++i) {
+		widget.RemoveGlyph(cells[i].GetRow(), cells[i].GetCol());
+	}
 }
 
 void FontGeneratorFrame::OnRemoveCharmap(wxCommandEvent &evt)
@@ -530,6 +536,8 @@ void FontGeneratorFrame::OnMapCellRightClick(wxGridEvent &evt) {
 	wxPoint point = evt.GetPosition();
 	wxMenu menu;
 
+	widget->SetFocus();
+
 	int id = wxID_HIGHEST + 100;
 	bool isCodepageCell = widget->GetCharmapTable()->IsTitleRow(evt.GetRow());
 	if (isCodepageCell) {
@@ -545,6 +553,9 @@ void FontGeneratorFrame::OnMapCellRightClick(wxGridEvent &evt) {
 			wxID_ANY, new wxVariant((void *)widget));
 	}
 	else {
+		if (!widget->IsSelection()) {
+			widget->SetGridCursor(evt.GetRow(), evt.GetCol());
+		}
 		menu.Append(id + 0, _("Remove"));
 		menu.Bind(wxEVT_MENU, &FontGeneratorFrame::OnRemoveGlyph, this, id + 0,
 			wxID_ANY, new wxVariant((void *)widget));

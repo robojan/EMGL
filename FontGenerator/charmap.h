@@ -80,6 +80,7 @@ public:
 
 
 	CharMapEntry *GetCharMapEntry(wxUint32 code);
+	void Remove(wxUint32 code);
 private:
 	std::map<unsigned int, CharMapEntry> m_map;
 	wxUint32 m_start;

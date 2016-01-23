@@ -224,6 +224,11 @@ CharMapEntry *CodePage::GetCharMapEntry(wxUint32 code)
 	return &m_map.at(code);
 }
 
+void CodePage::Remove(wxUint32 code)
+{
+	m_map.erase(code);
+}
+
 void CodePage::Shift(int shift)
 {
 	if (shift < 0) {

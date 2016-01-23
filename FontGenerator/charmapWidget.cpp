@@ -65,6 +65,47 @@ bool CharMapWidget::IsTitleRow(int row) const
 	return m_table->IsTitleRow(row);
 }
 
+wxGridCellCoordsArray CharMapWidget::GetAllSelectedCells() const
+{
+	int numCols = GetNumberCols();
+	int numRows = GetNumberRows();
+	wxGridCellCoordsArray cells(GetSelectedCells());
+	const wxArrayInt &rows(GetSelectedRows());
+	for (size_t i = 0; i < rows.size(); ++i) {
+		if (IsTitleRow(rows[i])) {
+			cells.push_back(wxGridCellCoords(rows[i], 0));
+		}
+		else {
+			for (int col = 0; col < numCols; ++col) {
+				cells.push_back(wxGridCellCoords(rows[i], col));
+			}
+		}
+	}
+	//_WX_DECLARE_OBJARRAY
+	const wxArrayInt &cols(GetSelectedCols());
+	for (size_t i = 0; i < cols.size(); ++i) {
+		for (int row = 0; row < numRows; ++row) {
+			if (!IsTitleRow(row)) {
+				cells.push_back(wxGridCellCoords(row, cols[i]));
+			}
+		}
+	}
+	const wxGridCellCoordsArray &btl(GetSelectionBlockTopLeft());
+	const wxGridCellCoordsArray &bbr(GetSelectionBlockBottomRight());
+	size_t blockCount = btl.size();
+	if (blockCount != bbr.size()) return cells;
+	for (size_t i = 0; i < blockCount; ++i) {
+		const wxGridCellCoords &tl = btl[i];
+		const wxGridCellCoords &br = bbr[i];
+		for (int row = tl.GetRow(); row <= br.GetRow(); ++row) {
+			for (int col = tl.GetCol(); col <= br.GetCol(); ++col) {
+				cells.push_back(wxGridCellCoords(row, col));
+			}
+		}
+	}
+	return cells;
+}
+
 void CharMapWidget::OnRangeSelect(wxGridRangeSelectEvent &evt)
 {
 	for (int r = evt.GetTopRow(); r > 0 && r <= evt.GetBottomRow(); r++) {
@@ -106,6 +147,52 @@ void CharMapWidget::OnCellSelect(wxGridEvent &evt)
 			SelectBlock(evt.GetRow(), evt.GetCol(), evt.GetRow(), evt.GetCol(), evt.ControlDown());
 		}
 	}
+}
+
+void CharMapWidget::DrawCellHighlight(wxDC& dc, const wxGridCellAttr *attr)
+{
+	// Copy from wxwidgets source only the hasfocus call removed
+	int row = m_currentCellCoords.GetRow();
+	int col = m_currentCellCoords.GetCol();
+
+	if (GetColWidth(col) <= 0 || GetRowHeight(row) <= 0)
+		return;
+
+	wxRect rect = CellToRect(row, col);
+
+	// hmmm... what could we do here to show that the cell is disabled?
+	// for now, I just draw a thinner border than for the other ones, but
+	// it doesn't look really good
+
+	int penWidth = attr->IsReadOnly() ? m_cellHighlightROPenWidth : m_cellHighlightPenWidth;
+
+	if (penWidth > 0)
+	{
+		// The center of the drawn line is where the position/width/height of
+		// the rectangle is actually at (on wxMSW at least), so the
+		// size of the rectangle is reduced to compensate for the thickness of
+		// the line. If this is too strange on non-wxMSW platforms then
+		// please #ifdef this appropriately.
+#ifndef __WXQT__
+		rect.x += penWidth / 2;
+		rect.y += penWidth / 2;
+		rect.width -= penWidth - 1;
+		rect.height -= penWidth - 1;
+#endif
+		// Now draw the rectangle
+		// use the cellHighlightColour if the cell is inside a selection, this
+		// will ensure the cell is always visible.
+		dc.SetPen(wxPen(IsInSelection(row, col) ? m_selectionForeground
+			: m_cellHighlightColour,
+			penWidth));
+		dc.SetBrush(*wxTRANSPARENT_BRUSH);
+		dc.DrawRectangle(rect);
+	}
+}
+
+void CharMapWidget::RemoveGlyph(int row, int col)
+{
+	m_table->RemoveGlyph(row, col);
 }
 
 const wxString CharMapDataObject::CharMapDataFormatID = "DF_Font_Glyphs";

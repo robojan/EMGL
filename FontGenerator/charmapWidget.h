@@ -93,6 +93,7 @@ public:
 	int GetCodePageStartRow(int row);
 	wxUint32 GetCharMapCode(int row, int col);
 	bool IsRangeEmpty(wxUint32 start, wxUint32 end);
+	void RemoveGlyph(int row, int col);
 private:
 
 	CharMap m_charmap;
@@ -135,16 +136,21 @@ public:
 		const wxSize &size = wxDefaultSize, long style = wxVSCROLL, 
 		const wxString &name = _("CharMapWidget"));
 
+	void RemoveGlyph(int row, int col);
 	void AddCodePage(const CodePage &codePage);
 	void AddCharmap(const CharMap &map);
 	CharMapEntry *GetEntry(int row, int col);
 	CharMapGridTable *GetCharmapTable();
 	bool IsTitleRow(int row) const;
 
+	wxGridCellCoordsArray GetAllSelectedCells() const;
+
 private:
 	void OnRangeSelect(wxGridRangeSelectEvent &evt);
 	void OnCellSelect(wxGridEvent &evt);
-	
+
+	virtual void DrawCellHighlight(wxDC& dc, const wxGridCellAttr *attr) override;
+
 
 	std::set<wxGridCellCoords, GridCellCoordsCompare> m_selectedCells;
 	CharMapGridTable *m_table;

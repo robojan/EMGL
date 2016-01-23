@@ -258,6 +258,21 @@ bool CharMapGridTable::AddCodePage(const CodePage &codePage)
 	return true;
 }
 
+void CharMapGridTable::RemoveGlyph(int row, int col)
+{
+	if (IsTitleRow(row)) {
+		return;
+	}
+	
+	CodePage &page = *GetCodePage(row);
+	wxUint32 code = GetCharMapCode(row, col);
+	page.Remove(code);
+	if (GetView()) {
+		wxGridTableMessage msg(this, wxGRIDTABLE_REQUEST_VIEW_GET_VALUES);
+		GetView()->ProcessTableMessage(msg);
+	}
+}
+
 void CharMapGridTable::RemoveCodePage(const CodePage &codePage)
 {
 	std::pair<int, int> range = GetCodePageRange(codePage);
@@ -388,7 +403,7 @@ void CharGridRenderer::Draw(wxGrid &grid, wxGridCellAttr &attr, wxDC &dc, const 
 		wxColour cellBackgroundColour;
 		if (isSelected)
 		{
-			cellBackgroundColour = grid.GetSelectionBackground();
+			cellBackgroundColour = backgroundColour;
 		}
 		else {
 			cellBackgroundColour = attr.GetBackgroundColour();
