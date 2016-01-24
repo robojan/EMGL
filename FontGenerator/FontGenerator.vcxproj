@@ -74,6 +74,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BinaryDataGenerator.cpp" />
     <ClCompile Include="charmap.cpp" />
     <ClCompile Include="charmapWidget.cpp" />
     <ClCompile Include="charmapWidgetTable.cpp" />
@@ -87,6 +88,7 @@
     <ClCompile Include="types.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BinaryDataGenerator.h" />
     <ClInclude Include="charmap.h" />
     <ClInclude Include="charmapWidget.h" />
     <ClInclude Include="font.h" />
@@ -96,6 +98,7 @@
     <ClInclude Include="fontManager.h" />
     <ClInclude Include="fontPreview.h" />
     <ClInclude Include="id.h" />
+    <ClInclude Include="IDataGenerator.h" />
     <ClInclude Include="memdbg.h" />
     <ClInclude Include="types.h" />
   </ItemGroup>

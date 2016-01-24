@@ -3,7 +3,7 @@
 
 #include <wx/wx.h>
 #include <map>
-#include <set>
+#include <list>
 
 #define ENCODING_APPLEROMAN_VALID 0x01
 #define ENCODING_MSSYMBOL_VALID 0x02
@@ -94,21 +94,24 @@ class CharMap
 {
 public:
 	CharMap();
+	CharMap(const CharMap &other);
 	virtual ~CharMap();
 
-	void RemoveCodePage(const CodePage & codePage);
-	void RemoveCodePage(std::set<CodePage>::const_iterator first, std::set<CodePage>::const_iterator last);
+	void RemoveCodePage(CodePage *codePage);
+	void RemoveCodePage(std::list<CodePage*>::const_iterator first, std::list<CodePage*>::const_iterator last);
 	void AddCodePage(const CodePage &page);
 	bool CanAddCodePage(const CodePage &page);
 	void SplitCodePage(wxUint32 splitCodeFirst);
 	CodePage *GetCodePage(wxUint32 code);
 
 	int GetCountCodePages() const;
-	std::set<CodePage>::iterator Begin() const;
-	std::set<CodePage>::iterator End() const;
+	std::list<CodePage *>::iterator Begin();
+	std::list<CodePage*>::iterator End();
+	std::list<CodePage *>::const_iterator CBegin() const;
+	std::list<CodePage*>::const_iterator CEnd() const;
 	void Clear();
 private:
-	std::set<CodePage> m_map;
+	std::list<CodePage *> m_map;
 };
 
 #endif

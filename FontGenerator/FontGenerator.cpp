@@ -8,7 +8,10 @@
 #include <wx/dnd.h>
 #include <wx/msgdlg.h>
 #include <wx/numdlg.h>
+#include <wx/filedlg.h>
+#include <wx/filename.h>
 #include "types.h"
+#include "BinaryDataGenerator.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -39,6 +42,9 @@ FontGeneratorFrame::FontGeneratorFrame(const wxString &title,
 	const wxPoint &pos, const wxSize &size): 
 	wxFrame(NULL, wxID_ANY, title, pos, size)
 {
+	m_dataGenerators.push_back(new BinaryDataGenerator());
+
+
 	wxPanel *mainPanel = new wxPanel(this);
 	wxSizer *mainSizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -52,6 +58,7 @@ FontGeneratorFrame::FontGeneratorFrame(const wxString &title,
 	m_compressionCheckbox = new wxCheckBox(optionsPanel, wxID_ANY, _("Use compression"));
 	m_compressionCheckbox->SetValue(true);
 	wxButton *saveOutputButton = new wxButton(optionsPanel, wxID_ANY, _("Generate fonts"));
+	saveOutputButton->Bind(wxEVT_BUTTON, &FontGeneratorFrame::OnSaveOutputButton, this);
 	
 	wxSizer *useSizer = new wxBoxSizer(wxHORIZONTAL);
 	wxButton *useButton = new wxButton(optionsPanel, wxID_ANY, _("<"));
@@ -96,6 +103,14 @@ FontGeneratorFrame::FontGeneratorFrame(const wxString &title,
 	mainSizer->Add(m_fontCharmapWidget, 0, wxEXPAND, 2);
 	mainPanel->SetSizerAndFit(mainSizer);
 	this->SetSize(wxSize(mainPanel->GetBestSize().GetWidth()+20, 600));
+}
+
+FontGeneratorFrame::~FontGeneratorFrame()
+{
+	for (std::vector<IDataGenerator *>::iterator it = m_dataGenerators.begin();
+		it != m_dataGenerators.end(); ++it) {
+		delete *it;
+	}
 }
 
 wxPanel *FontGeneratorFrame::CreateNewCodePagePanel(wxWindow *parent)
@@ -496,6 +511,40 @@ void FontGeneratorFrame::OnImportGlyph(wxCommandEvent &evt)
 	}
 	AdvanceCharmapCursor(m_fontCharmapWidget);
 	AdvanceCharmapCursor(m_charmapWidget);
+}
+
+void FontGeneratorFrame::OnSaveOutputButton(wxCommandEvent &evt)
+{
+	if (m_charmapWidget->GetCharmapTable()->GetNumberGlyphs() == 0) {
+		wxMessageBox(_("Please create an font"));
+		return;
+	}
+
+	wxASSERT(m_dataGenerators.size() > 0);
+	std::vector<IDataGenerator *>::iterator it = m_dataGenerators.begin();
+	wxString wildcardString = (*it)->GetWildCardString();
+	++it;
+	for (;it != m_dataGenerators.end(); ++it) {
+		wildcardString += "|" + (*it)->GetWildCardString();
+	}
+
+	// Save file dialog
+	wxFileDialog saveDialog(this, _("Select file in which the font will be saved"),
+		wxEmptyString, wxEmptyString, wildcardString, wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+	if (saveDialog.ShowModal() == wxID_CANCEL)
+		return;
+
+	// Do the saving
+	wxString path = saveDialog.GetPath();
+	wxFileName fileName = wxFileNameFromPath(path);
+	for (it = m_dataGenerators.begin(); it != m_dataGenerators.end(); ++it) {
+		if ((*it)->IsFilenameSupported(fileName)) {
+			(*it)->SaveCharmap(m_charmapWidget->GetCharmapTable()->GetCharMap(), 
+				m_compressionCheckbox->IsChecked(), path);
+			return;
+		}
+	}
+	wxLogError("Unknown file format");
 }
 
 void FontGeneratorFrame::AdvanceCharmapCursor(CharMapWidget *widget)

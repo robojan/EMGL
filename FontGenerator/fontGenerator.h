@@ -8,6 +8,7 @@
 #include "font.h"
 #include "fontFamilyCombobox.h"
 #include "charmapWidget.h"
+#include "IDataGenerator.h"
 
 class FontGenerator: public wxApp
 {
@@ -21,6 +22,7 @@ class FontGeneratorFrame: public wxFrame
 public:
 	FontGeneratorFrame(const wxString &title, const wxPoint &pos,
 		const wxSize &size);
+	~FontGeneratorFrame();
 
 private:
 	wxPanel *CreateFontChooser(wxWindow *parent);
@@ -48,6 +50,7 @@ private:
 	void OnRenameCharmapClick(wxCommandEvent &evt);
 	void OnSetCharmapOffset(wxCommandEvent &evt);
 	void OnImportGlyph(wxCommandEvent &evt);
+	void OnSaveOutputButton(wxCommandEvent &evt);
 	void AdvanceCharmapCursor(CharMapWidget *widget);
 
 	void SetSizeFromString(const wxString &str, Font &font);
@@ -67,6 +70,8 @@ private:
 	wxTextCtrl *m_addCodepageStartTextbox;
 	wxTextCtrl *m_addCodepageEndTextbox;
 	wxTextCtrl *m_addCodepageNameTextbox;
+
+	std::vector<IDataGenerator *> m_dataGenerators;
 
 	wxDECLARE_EVENT_TABLE();
 };

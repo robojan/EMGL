@@ -23,8 +23,10 @@ public:
 	void DrawGlyph(wxDC &dc, wxPoint &pos, wxUint32 glyph);
 	wxPoint GetGlyphAdvance(const wxString &c);
 	wxPoint GetGlyphAdvance(wxUint32 glyph);
+	wxPoint GetGlyphBitmapTL(wxUint32 glyph);
 	wxString GetUserDescription() const;
 	int GetHeight() const;
+	int GetAscender() const;
 	wxArrayString GetEncodings(wxUint32 **codes = NULL) const;
 	ArrayUint32 GetEncodingIDs() const;
 	wxString GetSelectedEncoding() const;

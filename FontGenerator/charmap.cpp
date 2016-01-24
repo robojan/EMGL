@@ -300,9 +300,19 @@ CharMap::CharMap()
 
 }
 
+CharMap::CharMap(const CharMap &other)
+{
+	for (std::list<CodePage *>::const_iterator it = other.CBegin();
+		it != other.CEnd(); ++it) {
+		m_map.push_back(new CodePage(**it));
+	}
+}
+
 CharMap::~CharMap()
 {
-
+	for (std::list<CodePage *>::iterator it = Begin(); it != End(); ++it) {
+		delete *it;
+	}
 }
 
 int CharMap::GetCountCodePages() const
@@ -310,14 +320,24 @@ int CharMap::GetCountCodePages() const
 	return m_map.size();
 }
 
-std::set<CodePage>::iterator CharMap::Begin() const
+std::list<CodePage *>::iterator CharMap::Begin()
 {
 	return m_map.begin();
 }
 
-std::set<CodePage>::iterator CharMap::End() const
+std::list<CodePage *>::iterator CharMap::End()
 {
 	return m_map.end();
+}
+
+std::list<CodePage *>::const_iterator CharMap::CBegin() const
+{
+	return m_map.cbegin();
+}
+
+std::list<CodePage*>::const_iterator CharMap::CEnd() const
+{
+	return m_map.cend();
 }
 
 void CharMap::Clear()
@@ -325,29 +345,35 @@ void CharMap::Clear()
 	m_map.clear();
 }
 
-void CharMap::RemoveCodePage(const CodePage &page)
+void CharMap::RemoveCodePage(CodePage *page)
 {
-	m_map.erase(page);
+	m_map.remove(page);
+	delete page;
 }
 
-void CharMap::RemoveCodePage(std::set<CodePage>::const_iterator first, std::set<CodePage>::const_iterator last)
+void CharMap::RemoveCodePage(std::list<CodePage *>::const_iterator first, std::list<CodePage *>::const_iterator last)
 {
 	m_map.erase(first, last);
 }
 
 void CharMap::AddCodePage(const CodePage &page)
 {
-	m_map.insert(page);
+	wxASSERT(CanAddCodePage(page));
+	std::list<CodePage *>::const_iterator it = CBegin();
+	while (it != CEnd() && (*it)->GetRangeStart() <= page.GetRangeEnd()) {
+		++it;
+	}
+	m_map.insert(it, new CodePage(page));
 }
 
 bool CharMap::CanAddCodePage(const CodePage &page)
 {
-	for (std::set<CodePage>::const_iterator it = Begin();
-		it != End(); ++it)
+	for (std::list<CodePage*>::const_iterator it = CBegin();
+		it != CEnd(); ++it)
 	{
-		if (!(page > *it))
+		if (!(page > **it))
 		{
-			return page < *it;
+			return page < **it;
 		}
 	}
 	return true;
@@ -361,7 +387,7 @@ void CharMap::SplitCodePage(wxUint32 splitCodeFirst)
 	}
 	CodePage oldPage(*page);
 	CodePage newPage(*page, splitCodeFirst, page->GetRangeEnd());
-	RemoveCodePage(*page);
+	RemoveCodePage(page);
 	// Todo: delete only present glyphs
 	for (wxUint32 i = splitCodeFirst; i <= oldPage.GetRangeEnd(); i++) {
 		oldPage.Remove(i);
@@ -373,12 +399,12 @@ void CharMap::SplitCodePage(wxUint32 splitCodeFirst)
 
 CodePage *CharMap::GetCodePage(wxUint32 code)
 {
-	for (std::set<CodePage>::const_iterator it = Begin();
+	for (std::list<CodePage *>::iterator it = Begin();
 		it != End(); ++it)
 	{
-		if (code >= it->GetRangeStart() && code <= it->GetRangeEnd())
+		if (code >= (*it)->GetRangeStart() && code <= (*it)->GetRangeEnd())
 		{
-			return const_cast<CodePage *>(&(*it));
+			return *it;
 		}
 	}
 	return NULL;

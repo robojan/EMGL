@@ -17,10 +17,10 @@ CharMapGridTable::~CharMapGridTable()
 
 bool CharMapGridTable::IsRangeEmpty(wxUint32 start, wxUint32 end)
 {
-	for (std::set<CodePage>::const_iterator it = m_charmap.Begin();
+	for (std::list<CodePage*>::const_iterator it = m_charmap.Begin();
 		it != m_charmap.End(); ++it) {
-		if ((start >= it->GetRangeStart() && start <= it->GetRangeEnd()) ||
-			(end >= it->GetRangeStart() && end <= it->GetRangeEnd())) {
+		if ((start >= (*it)->GetRangeStart() && start <= (*it)->GetRangeEnd()) ||
+			(end >= (*it)->GetRangeStart() && end <= (*it)->GetRangeEnd())) {
 			return false;
 		}
 	}
@@ -32,11 +32,11 @@ std::pair<int, int> CharMapGridTable::GetCodePageRange(const CodePage &codePage)
 	int start = -1;
 	int end = -1;
 	int pos = 0;
-	for (std::set<CodePage>::const_iterator it = m_charmap.Begin();
+	for (std::list<CodePage *>::const_iterator it = m_charmap.Begin();
 		it != m_charmap.End(); ++it) {
-		int size = (it->GetRangeEnd() - it->GetRangeStart() + GetNumberCols() - 1) /
+		int size = ((*it)->GetRangeEnd() - (*it)->GetRangeStart() + GetNumberCols() - 1) /
 			GetNumberCols() + 1;
-		if (*it == codePage) {
+		if (**it == codePage) {
 			start = pos;
 			end = pos + size - 1;
 			return std::make_pair(start, end);
@@ -51,10 +51,10 @@ int CharMapGridTable::GetNumberRows()
 {
 	int count = 0;
 
-	for (std::set<CodePage>::const_iterator it = m_charmap.Begin();
+	for (std::list<CodePage *>::const_iterator it = m_charmap.Begin();
 		it != m_charmap.End(); ++it)
 	{
-		int chars = it->GetRangeEnd() - it->GetRangeStart();
+		int chars = (*it)->GetRangeEnd() - (*it)->GetRangeStart();
 		count += (chars + GetNumberCols() - 1) / GetNumberCols() + 1;
 	}
 	return count;
@@ -261,14 +261,14 @@ bool CharMapGridTable::AddCodePage(const CodePage &codePage)
 	}
 	if (GetView())
 	{
-		for (std::set<CodePage>::const_iterator it = m_charmap.Begin();
+		for (std::list<CodePage*>::const_iterator it = m_charmap.Begin();
 			it != m_charmap.End(); ++it)
 		{
-			if (it->GetRangeEnd() > codePage.GetRangeStart())
+			if ((*it)->GetRangeEnd() > codePage.GetRangeStart())
 			{
 				break;
 			}
-			rows += 1 + (it->GetSize() + GetNumberCols() - 1) / GetNumberCols();
+			rows += 1 + ((*it)->GetSize() + GetNumberCols() - 1) / GetNumberCols();
 		}
 		numRows = (codePage.GetSize() + GetNumberCols() - 1) / GetNumberCols() + 1;
 	}
@@ -304,13 +304,13 @@ void CharMapGridTable::RemoveGlyph(int row, int col)
 	}
 }
 
-void CharMapGridTable::RemoveCodePage(const CodePage &codePage)
+void CharMapGridTable::RemoveCodePage(CodePage &codePage)
 {
 	std::pair<int, int> range = GetCodePageRange(codePage);
 	if (range.first == -1 || range.second == -1) {
 		return;
 	}
-	m_charmap.RemoveCodePage(codePage);
+	m_charmap.RemoveCodePage(&codePage);
 	if (GetView()) {
 		wxGridTableMessage msg(this, wxGRIDTABLE_NOTIFY_ROWS_DELETED, range.first, range.second - range.first + 1);
 		GetView()->ProcessTableMessage(msg);
@@ -327,13 +327,13 @@ void CharMapGridTable::RemoveCodePage(int row)
 
 void CharMapGridTable::RemoveCodePage(wxUint32 start, wxUint32 end)
 {
-	std::set<CodePage>::const_iterator startIt = m_charmap.End();
-	std::set<CodePage>::const_iterator endIt = m_charmap.End();
-	for (std::set<CodePage>::const_iterator it = m_charmap.Begin();
+	std::list<CodePage *>::const_iterator startIt = m_charmap.End();
+	std::list<CodePage *>::const_iterator endIt = m_charmap.End();
+	for (std::list<CodePage *>::const_iterator it = m_charmap.Begin();
 		it != m_charmap.End(); ++it)
 	{
-		if (it->GetRangeStart() >= start && it->GetRangeStart() <= end ||
-			it->GetRangeEnd() >= start && it->GetRangeEnd() <= end) {
+		if ((*it)->GetRangeStart() >= start && (*it)->GetRangeStart() <= end ||
+			(*it)->GetRangeEnd() >= start && (*it)->GetRangeEnd() <= end) {
 			if (startIt == m_charmap.End()) {
 				startIt = it;
 			}
@@ -341,8 +341,8 @@ void CharMapGridTable::RemoveCodePage(wxUint32 start, wxUint32 end)
 		}
 	}
 	if (startIt != m_charmap.End()) {
-		int startRow = GetCodePageStartRow(*startIt);
-		int endRow = GetCodePageRange(*endIt).second;
+		int startRow = GetCodePageStartRow(**startIt);
+		int endRow = GetCodePageRange(**endIt).second;
 		if (endIt != m_charmap.End()) {
 			endIt++;
 		}
@@ -382,7 +382,7 @@ void CharMapGridTable::SplitCodePage(wxUint32 splitCodeFirst)
 bool CharMapGridTable::IsTitleRow(int row)
 {
 	int currentRow = 0;
-	for (std::set<CodePage>::const_iterator it = m_charmap.Begin();
+	for (std::list<CodePage *>::const_iterator it = m_charmap.Begin();
 		it != m_charmap.End(); ++it)
 	{
 		if (row == currentRow)
@@ -393,7 +393,7 @@ bool CharMapGridTable::IsTitleRow(int row)
 		{
 			return false;
 		}
-		currentRow += 1 + (it->GetSize() + GetNumberCols() - 1) / GetNumberCols();
+		currentRow += 1 + ((*it)->GetSize() + GetNumberCols() - 1) / GetNumberCols();
 	}
 	return false;
 }
@@ -401,13 +401,13 @@ bool CharMapGridTable::IsTitleRow(int row)
 CodePage * CharMapGridTable::GetCodePage(int row)
 {
 	int currentRow = 0;
-	for (std::set<CodePage>::iterator it = m_charmap.Begin();
+	for (std::list<CodePage *>::iterator it = m_charmap.Begin();
 		it != m_charmap.End(); ++it)
 	{
-		int size = 1 + (it->GetSize() + GetNumberCols() - 1) / GetNumberCols();
+		int size = 1 + ((*it)->GetSize() + GetNumberCols() - 1) / GetNumberCols();
 		if (row >= currentRow && row < currentRow + size)
 		{
-			return const_cast<CodePage *>(&(*it));
+			return *it;
 		}
 		currentRow += size;
 	}
@@ -417,11 +417,11 @@ CodePage * CharMapGridTable::GetCodePage(int row)
 int CharMapGridTable::GetCodePageStartRow(const CodePage &page)
 {
 	int currentRow = 0;
-	for (std::set<CodePage>::iterator it = m_charmap.Begin();
+	for (std::list<CodePage*>::iterator it = m_charmap.Begin();
 		it != m_charmap.End(); ++it)
 	{
-		int size = 1 + (it->GetSize() + GetNumberCols() - 1) / GetNumberCols();
-		if (*it == page)
+		int size = 1 + ((*it)->GetSize() + GetNumberCols() - 1) / GetNumberCols();
+		if (**it == page)
 		{
 			return currentRow;
 		}
@@ -434,10 +434,10 @@ int CharMapGridTable::GetCodePageStartRow(const CodePage &page)
 int CharMapGridTable::GetCodePageStartRow(int row)
 {
 	int currentRow = 0;
-	for (std::set<CodePage>::iterator it = m_charmap.Begin();
+	for (std::list<CodePage *>::iterator it = m_charmap.Begin();
 		it != m_charmap.End(); ++it)
 	{
-		int size = 1 + (it->GetSize() + GetNumberCols() - 1) / GetNumberCols();
+		int size = 1 + ((*it)->GetSize() + GetNumberCols() - 1) / GetNumberCols();
 		if (row >= currentRow && row < currentRow + size)
 		{
 			return currentRow;
@@ -452,6 +452,19 @@ wxUint32 CharMapGridTable::GetCharMapCode(int row, int col)
 	return (row - GetCodePageStartRow(row) - 1) * GetNumberCols() +
 		col + GetCodePage(row)->GetRangeStart();
 }
+
+int CharMapGridTable::GetNumberGlyphs()
+{
+	int count = 0;
+	for (std::list<CodePage *>::iterator it = m_charmap.Begin();
+	it != m_charmap.End(); ++it)
+	{
+		count += (*it)->GetSize();
+	}
+
+	return count;
+}
+
 
 CharGridRenderer::CharGridRenderer()
 {

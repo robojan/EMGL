@@ -86,7 +86,7 @@ public:
 
 	bool AddCodePage(const CodePage &codePage);
 	void RemoveCodePage(int row);
-	void RemoveCodePage(const CodePage &codePage);
+	void RemoveCodePage(CodePage &codePage);
 	void RemoveCodePage(wxUint32 start, wxUint32 end);
 	std::pair<int, int> GetCodePageRange(const CodePage &codePage);
 	void SplitCodePage(wxUint32 splitCodeFirst);
@@ -98,6 +98,8 @@ public:
 	wxUint32 GetCharMapCode(int row, int col);
 	bool IsRangeEmpty(wxUint32 start, wxUint32 end);
 	void RemoveGlyph(int row, int col);
+	int GetNumberGlyphs();
+	const CharMap & GetCharMap();
 private:
 
 	CharMap m_charmap;

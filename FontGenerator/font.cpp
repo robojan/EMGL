@@ -217,10 +217,29 @@ wxPoint Font::GetGlyphAdvance(wxUint32 glyph)
 	return wxPoint(m_face->glyph->advance.x>>6, m_face->glyph->advance.y>>6);
 }
 
+wxPoint Font::GetGlyphBitmapTL(wxUint32 glyph)
+{
+	wxASSERT(m_face != NULL);
+	FT_Error error;
+	error = FT_Load_Glyph(m_face, glyph, FT_LOAD_DEFAULT);
+	if (error != FT_Err_Ok)
+	{
+		return wxPoint(0, 0);
+	}
+	return wxPoint(m_face->glyph->bitmap_left , m_face->glyph->bitmap_top);
+}
+
 int Font::GetHeight() const
 {
 	wxASSERT(m_face != NULL);
 	return m_face->size->metrics.height>>6;
+}
+
+int Font::GetAscender() const
+{
+	wxASSERT(m_face != NULL);
+	// Move to origin
+	return m_face->size->metrics.ascender >> 6;
 }
 
 wxArrayString Font::GetEncodings(wxUint32 **codes) const

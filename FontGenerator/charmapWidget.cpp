@@ -39,10 +39,10 @@ void CharMapWidget::AddCodePage(const CodePage &codePage)
 
 void CharMapWidget::AddCharmap(const CharMap &map)
 {
-	for (std::set<CodePage>::iterator it = map.Begin();
-		it != map.End(); ++it)
+	for (std::list<CodePage *>::const_iterator it = map.CBegin();
+		it != map.CEnd(); ++it)
 	{
-		AddCodePage(*it);
+		AddCodePage(**it);
 	}
 }
 
@@ -264,4 +264,9 @@ void CharMapDataObject::AddGlyphString(const wxString &str)
 	const wxScopedCharBuffer strData = str.To8BitData();
 	m_glyphs.resize(oldSize + strData.length() + 1);
 	strcpy(m_glyphs.data() + oldSize, strData.data());
+}
+
+const CharMap & CharMapGridTable::GetCharMap()
+{
+	return m_charmap;
 }
