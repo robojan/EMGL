@@ -492,7 +492,14 @@ void CharGridRenderer::Draw(wxGrid &grid, wxGridCellAttr &attr, wxDC &dc, const 
 	else {
 		wxUint32 charmapCode = table->GetCharMapCode(row, col);
 		CharMapEntry *entry = page->GetCharMapEntry(charmapCode);
-		if (charmapCode > page->GetRangeEnd() || entry == NULL)
+		if (charmapCode < page->GetRangeStart() || charmapCode > page->GetRangeEnd()) 
+		{
+			dc.SetBrush(backgroundBrush);
+			dc.SetPen(*wxTRANSPARENT_PEN);
+			dc.DrawRectangle(rect);
+			return;
+		}
+		if (entry == NULL)
 		{
 			dc.SetBrush(backgroundBrush);
 			dc.SetPen(*wxTRANSPARENT_PEN);
@@ -512,7 +519,6 @@ void CharGridRenderer::Draw(wxGrid &grid, wxGridCellAttr &attr, wxDC &dc, const 
 		}
 		dc.SetTextBackground(cellBackgroundColour);
 		dc.DrawText(wxString::Format(_("%X"), charmapCode), rect.GetLeftTop() + wxPoint(2, 2));
-
 		LoadFont(entry->GetFamily(), entry->GetStyle(), entry->GetSize(), entry->GetEncodingID());
 		if (m_loadedFont.IsOk())
 		{
