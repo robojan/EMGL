@@ -47,6 +47,8 @@ private:
 	void OnRemoveCharmap(wxCommandEvent &evt);
 	void OnRenameCharmapClick(wxCommandEvent &evt);
 	void OnSetCharmapOffset(wxCommandEvent &evt);
+	void OnImportGlyph(wxCommandEvent &evt);
+	void AdvanceCharmapCursor(CharMapWidget *widget);
 
 	void SetSizeFromString(const wxString &str, Font &font);
 

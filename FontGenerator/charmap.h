@@ -61,6 +61,8 @@ class CodePage
 {
 public:
 	CodePage(wxUint32 start = 0, wxUint32 end =0, const wxString &name = wxEmptyString);
+	CodePage(const CodePage &other, wxUint32 start, wxUint32 end);
+	CodePage(const CodePage &other);
 
 	const wxString &GetName() const;
 	void SetName(const wxString &name);
@@ -95,13 +97,16 @@ public:
 	virtual ~CharMap();
 
 	void RemoveCodePage(const CodePage & codePage);
+	void RemoveCodePage(std::set<CodePage>::const_iterator first, std::set<CodePage>::const_iterator last);
 	void AddCodePage(const CodePage &page);
 	bool CanAddCodePage(const CodePage &page);
+	void SplitCodePage(wxUint32 splitCodeFirst);
+	CodePage *GetCodePage(wxUint32 code);
 
 	int GetCountCodePages() const;
 	std::set<CodePage>::iterator Begin() const;
 	std::set<CodePage>::iterator End() const;
-
+	void Clear();
 private:
 	std::set<CodePage> m_map;
 };

@@ -55,7 +55,7 @@ int CharMapGridTable::GetNumberRows()
 		it != m_charmap.End(); ++it)
 	{
 		int chars = it->GetRangeEnd() - it->GetRangeStart();
-		count += (chars + GetNumberCols() - 1) / GetNumberCols();
+		count += (chars + GetNumberCols() - 1) / GetNumberCols() + 1;
 	}
 	return count;
 }
@@ -107,6 +107,30 @@ void CharMapGridTable::SetValue(int row, int col, const wxString &value)
 		else {
 			*entry = CharMapEntry(value);
 		}
+	}
+	if (GetView()) {
+		wxGridTableMessage msg(this, wxGRIDTABLE_REQUEST_VIEW_GET_VALUES);
+		GetView()->ProcessTableMessage(msg);
+	}
+}
+
+void CharMapGridTable::SetValue(int row, int col, const CharMapEntry &value)
+{
+	if (IsTitleRow(row)) {
+		return;
+	}
+	CodePage *page = GetCodePage(row);
+	wxUint32 code = GetCharMapCode(row, col);
+	CharMapEntry *entry = page->GetCharMapEntry(code);
+	if (entry == NULL) {
+		(*page)[code] = value;
+	}
+	else {
+		*entry = value;
+	}
+	if (GetView()) {
+		wxGridTableMessage msg(this, wxGRIDTABLE_REQUEST_VIEW_GET_VALUES);
+		GetView()->ProcessTableMessage(msg);
 	}
 }
 
@@ -167,7 +191,14 @@ void CharMapGridTable::SetValueAsCustom(int row, int col, const wxString &typeNa
 
 void CharMapGridTable::Clear()
 {
-
+	int numRows = GetNumberRows();
+	m_charmap.Clear();
+	if (GetView()) {
+		wxGridTableMessage msg1(this, wxGRIDTABLE_NOTIFY_ROWS_DELETED, 0, numRows);
+		GetView()->ProcessTableMessage(msg1);
+		wxGridTableMessage msg2(this, wxGRIDTABLE_REQUEST_VIEW_GET_VALUES);
+		GetView()->ProcessTableMessage(msg2);
+	}
 }
 
 bool CharMapGridTable::InsertRows(size_t pos /*= 0*/, size_t numRows /*= 1*/)
@@ -294,6 +325,60 @@ void CharMapGridTable::RemoveCodePage(int row)
 	RemoveCodePage(*GetCodePage(row));
 }
 
+void CharMapGridTable::RemoveCodePage(wxUint32 start, wxUint32 end)
+{
+	std::set<CodePage>::const_iterator startIt = m_charmap.End();
+	std::set<CodePage>::const_iterator endIt = m_charmap.End();
+	for (std::set<CodePage>::const_iterator it = m_charmap.Begin();
+		it != m_charmap.End(); ++it)
+	{
+		if (it->GetRangeStart() >= start && it->GetRangeStart() <= end ||
+			it->GetRangeEnd() >= start && it->GetRangeEnd() <= end) {
+			if (startIt == m_charmap.End()) {
+				startIt = it;
+			}
+			endIt = it;
+		}
+	}
+	if (startIt != m_charmap.End()) {
+		int startRow = GetCodePageStartRow(*startIt);
+		int endRow = GetCodePageRange(*endIt).second;
+		if (endIt != m_charmap.End()) {
+			endIt++;
+		}
+		m_charmap.RemoveCodePage(startIt, endIt);
+		if (GetView()) {
+			wxGridTableMessage msg(this, wxGRIDTABLE_NOTIFY_ROWS_DELETED, startRow, endRow - startRow + 1);
+			GetView()->ProcessTableMessage(msg);
+		}
+	}
+}
+
+void CharMapGridTable::SplitCodePage(wxUint32 splitCodeFirst)
+{
+	int numCodePages = m_charmap.GetCountCodePages();
+	CodePage *oldPage = m_charmap.GetCodePage(splitCodeFirst);
+	int numRowsOld = 0;
+	if(oldPage) numRowsOld = (oldPage->GetSize() + GetNumberCols() - 1) / GetNumberCols() + 1;
+	m_charmap.SplitCodePage(splitCodeFirst);
+	if (numCodePages != m_charmap.GetCountCodePages()) {
+		// There was a split
+		CodePage *page2 = m_charmap.GetCodePage(splitCodeFirst);
+		CodePage *page1 = m_charmap.GetCodePage(splitCodeFirst-1);
+		int startRow = GetCodePageStartRow(*page2);
+		int numRowsPage2 = (page2->GetSize() + GetNumberCols() - 1) / GetNumberCols() + 1;
+		int numRowsPage1 = (page1->GetSize() + GetNumberCols() - 1) / GetNumberCols() + 1;
+		int numRows = numRowsPage2 + numRowsPage1 - numRowsOld;
+		wxASSERT(numRows >= 1);
+		wxGridTableMessage msg(this, wxGRIDTABLE_NOTIFY_ROWS_INSERTED, startRow, numRows);
+		GetView()->ProcessTableMessage(msg);
+		GetView()->SetCellSize(startRow, 0, 1, GetNumberCols());
+		GetView()->AutoSizeRows(true);
+		GetView()->AutoSizeColumns();
+	}
+}
+
+
 bool CharMapGridTable::IsTitleRow(int row)
 {
 	int currentRow = 0;
@@ -328,6 +413,23 @@ CodePage * CharMapGridTable::GetCodePage(int row)
 	}
 	return NULL;
 }
+
+int CharMapGridTable::GetCodePageStartRow(const CodePage &page)
+{
+	int currentRow = 0;
+	for (std::set<CodePage>::iterator it = m_charmap.Begin();
+		it != m_charmap.End(); ++it)
+	{
+		int size = 1 + (it->GetSize() + GetNumberCols() - 1) / GetNumberCols();
+		if (*it == page)
+		{
+			return currentRow;
+		}
+		currentRow += size;
+	}
+	return -1;
+}
+
 
 int CharMapGridTable::GetCodePageStartRow(int row)
 {

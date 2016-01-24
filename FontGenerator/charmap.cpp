@@ -152,6 +152,28 @@ CodePage::CodePage(wxUint32 start, wxUint32 end, const wxString &name)
 	m_name = name;
 }
 
+CodePage::CodePage(const CodePage &other, wxUint32 start, wxUint32 end)
+{
+	m_name = other.m_name;
+	m_start = start;
+	m_end = end;
+	std::map<wxUint32, CharMapEntry>::const_iterator it = other.m_map.cbegin();
+	while (it != other.m_map.cend() && it->first < start) {
+		++it;
+	}
+	if (it != other.m_map.cend()) {
+		m_map.insert(it, other.m_map.cend());
+	}
+}
+
+CodePage::CodePage(const CodePage &other)
+{
+	m_name = other.m_name;
+	m_start = other.m_start;
+	m_end = other.m_end;
+	m_map.insert(other.m_map.cbegin(), other.m_map.cend());
+}
+
 bool CodePage::operator<(const CodePage &rhs) const
 {
 	return m_end < rhs.m_start;
@@ -298,9 +320,19 @@ std::set<CodePage>::iterator CharMap::End() const
 	return m_map.end();
 }
 
+void CharMap::Clear()
+{
+	m_map.clear();
+}
+
 void CharMap::RemoveCodePage(const CodePage &page)
 {
 	m_map.erase(page);
+}
+
+void CharMap::RemoveCodePage(std::set<CodePage>::const_iterator first, std::set<CodePage>::const_iterator last)
+{
+	m_map.erase(first, last);
 }
 
 void CharMap::AddCodePage(const CodePage &page)
@@ -319,5 +351,36 @@ bool CharMap::CanAddCodePage(const CodePage &page)
 		}
 	}
 	return true;
+}
+
+void CharMap::SplitCodePage(wxUint32 splitCodeFirst)
+{
+	CodePage *page = GetCodePage(splitCodeFirst);
+	if (page == NULL || page->GetRangeStart() == splitCodeFirst) {
+		return;
+	}
+	CodePage oldPage(*page);
+	CodePage newPage(*page, splitCodeFirst, page->GetRangeEnd());
+	RemoveCodePage(*page);
+	// Todo: delete only present glyphs
+	for (wxUint32 i = splitCodeFirst; i <= oldPage.GetRangeEnd(); i++) {
+		oldPage.Remove(i);
+	}
+	oldPage.SetEnd(splitCodeFirst - 1);
+	AddCodePage(oldPage);
+	AddCodePage(newPage);
+}
+
+CodePage *CharMap::GetCodePage(wxUint32 code)
+{
+	for (std::set<CodePage>::const_iterator it = Begin();
+		it != End(); ++it)
+	{
+		if (code >= it->GetRangeStart() && code <= it->GetRangeEnd())
+		{
+			return const_cast<CodePage *>(&(*it));
+		}
+	}
+	return NULL;
 }
 

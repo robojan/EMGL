@@ -58,6 +58,7 @@ public:
 	virtual bool IsEmptyCell(int row, int col);
 	virtual wxString GetValue(int row, int col);
 	virtual void SetValue(int row, int col, const wxString &value);
+	void SetValue(int row, int col, const CharMapEntry &value);
 	virtual wxString GetTypeName(int row, int col);
 	virtual bool CanGetValueAs(int row, int col, const wxString &typeName);
 	virtual bool CanSetValueAs(int row, int col, const wxString &typeName);
@@ -86,11 +87,14 @@ public:
 	bool AddCodePage(const CodePage &codePage);
 	void RemoveCodePage(int row);
 	void RemoveCodePage(const CodePage &codePage);
+	void RemoveCodePage(wxUint32 start, wxUint32 end);
 	std::pair<int, int> GetCodePageRange(const CodePage &codePage);
+	void SplitCodePage(wxUint32 splitCodeFirst);
 
 	bool IsTitleRow(int row);
 	CodePage *GetCodePage(int row);
 	int GetCodePageStartRow(int row);
+	int GetCodePageStartRow(const CodePage &page);
 	wxUint32 GetCharMapCode(int row, int col);
 	bool IsRangeEmpty(wxUint32 start, wxUint32 end);
 	void RemoveGlyph(int row, int col);

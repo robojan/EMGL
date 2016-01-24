@@ -55,6 +55,7 @@ FontGeneratorFrame::FontGeneratorFrame(const wxString &title,
 	
 	wxSizer *useSizer = new wxBoxSizer(wxHORIZONTAL);
 	wxButton *useButton = new wxButton(optionsPanel, wxID_ANY, _("<"));
+	useButton->Bind(wxEVT_BUTTON, &FontGeneratorFrame::OnImportGlyph, this);
 	useSizer->Add(useButton, 0, wxSHAPED, 3);
 
 	optionsSizer->Add(m_glyphInfoPanel, 0, wxEXPAND | wxALIGN_CENTER, 3);
@@ -469,6 +470,61 @@ void FontGeneratorFrame::OnSetCharmapOffset(wxCommandEvent &evt)
 	}
 }
 
+void FontGeneratorFrame::OnImportGlyph(wxCommandEvent &evt)
+{
+	if (m_fontCharmapWidget->GetNumberRows() <= 1) {
+		wxMessageBox(_("Please load a font."), _("Error"));
+		return;
+	}
+	if (m_fontCharmapWidget->IsTitleRow(m_fontCharmapWidget->GetCursorRow())) {
+		wxMessageBox(_("Please select an glyph to import."), _("Error"));
+		return;
+	}
+	if (m_charmapWidget->GetNumberRows() <= 1) {
+		wxMessageBox(_("Please create an codepage first"), _("Error"));
+		return;
+	}
+	if (m_charmapWidget->IsTitleRow(m_charmapWidget->GetGridCursorRow())) {
+		wxMessageBox(_("Please select an free spot."), _("Error"));
+		return;
+	}
+	CharMapEntry *entry = m_fontCharmapWidget->GetEntry(m_fontCharmapWidget->GetGridCursorRow(), 
+		m_fontCharmapWidget->GetGridCursorCol());
+	if (entry != NULL) {
+		m_charmapWidget->GetCharmapTable()->SetValue(m_charmapWidget->GetGridCursorRow(),
+			m_charmapWidget->GetGridCursorCol(), *entry);
+	}
+	AdvanceCharmapCursor(m_fontCharmapWidget);
+	AdvanceCharmapCursor(m_charmapWidget);
+}
+
+void FontGeneratorFrame::AdvanceCharmapCursor(CharMapWidget *widget)
+{
+	int row, col, rowsLeft;
+	col = widget->GetGridCursorCol();
+	if (col == widget->GetNumberCols() - 1) {
+		row = widget->GetGridCursorRow();
+		rowsLeft = widget->GetNumberRows() - row - 1;
+		if (rowsLeft >= 1) {
+			if (widget->IsTitleRow(row + 1)) {
+				if (rowsLeft >= 2) {
+					row += 2;
+					col = 0;
+				}
+			}
+			else {
+				row += 1;
+				col = 0;
+			}
+		}
+	}
+	else {
+		row = widget->GetGridCursorRow();
+		col += 1;
+	}
+	widget->SetGridCursor(row, col);
+}
+
 void FontGeneratorFrame::OnOpenFont(wxCommandEvent &evt)
 {
 	wxFileDialog openDialog(this, _("Open font from file"), wxEmptyString, 
@@ -504,7 +560,6 @@ void FontGeneratorFrame::OnLoadFont(wxCommandEvent &evt)
 		id++;
 	}
 	this->PopupMenu(&menu);
-	m_fontCharmapWidget->ClearGrid();
 }
 
 void FontGeneratorFrame::OnImportFont(wxCommandEvent &evt)
@@ -527,7 +582,6 @@ void FontGeneratorFrame::OnImportFont(wxCommandEvent &evt)
 		id++;
 	}
 	this->PopupMenu(&menu);
-	m_fontCharmapWidget->ClearGrid();
 }
 
 void FontGeneratorFrame::OnMapCellRightClick(wxGridEvent &evt) {
@@ -585,6 +639,7 @@ void FontGeneratorFrame::OnLoadAllFont(wxCommandEvent &evt)
 	progress.Pulse();
 	CharMap map = font.GetCharMap();
 	progress.Pulse();
+	m_fontCharmapWidget->GetCharmapTable()->Clear();
 	m_fontCharmapWidget->AddCharmap(map);
 }
 
@@ -597,6 +652,7 @@ void FontGeneratorFrame::OnLoadPresetFont(wxCommandEvent &evt)
 	wxASSERT(preset != NULL);
 	CodePage page;
 	GetSelectedCodePage(page, preset);
+	m_fontCharmapWidget->GetCharmapTable()->Clear();
 	m_fontCharmapWidget->AddCodePage(page);
 }
 
@@ -621,7 +677,19 @@ void FontGeneratorFrame::OnImportPresetFont(wxCommandEvent &evt)
 	wxASSERT(preset != NULL);
 	CodePage page;
 	GetSelectedCodePage(page, preset);
-	m_charmapWidget->AddCodePage(page);
+	if (m_charmapWidget->GetCharmapTable()->IsRangeEmpty(page.GetRangeStart(),
+		page.GetRangeEnd())) {
+		m_charmapWidget->AddCodePage(page);
+	}
+	else {
+		if (wxMessageBox(_("Do you want to overwrite the existing codepage?"), _("Are you sure?"), wxYES_NO, this) == wxYES) {
+			// Split codepage
+			m_charmapWidget->GetCharmapTable()->SplitCodePage(page.GetRangeStart());
+			m_charmapWidget->GetCharmapTable()->SplitCodePage(page.GetRangeEnd() + 1);
+			m_charmapWidget->GetCharmapTable()->RemoveCodePage(page.GetRangeStart(), page.GetRangeEnd());
+			m_charmapWidget->AddCodePage(page);
+		}
+	}
 }
 
 void FontGeneratorFrame::OnCreateCodepage(wxCommandEvent &evt)
