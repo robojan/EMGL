@@ -115,13 +115,13 @@ void CompressBitmap(wxUint8 **buffer, int *bufferSize, int numPixels, enum Outpu
 		outBitPos += outElementSize;
 		
 	}
-	if (outBuffer.size() < *bufferSize) {
+	if ((int)outBuffer.size() < *bufferSize) {
 		// When compressing reduced the size overwrite the buffer
 		wxUint8 *newBuffer = new wxUint8[outBuffer.size()];
 		memcpy(newBuffer, outBuffer.data(), outBuffer.size());
 		delete[] * buffer;
 		*buffer = newBuffer;
-		*bufferSize = (1 << 31) | outBuffer.size();
+		*bufferSize = (1 << 31) | (int)outBuffer.size();
 	}
 }
 

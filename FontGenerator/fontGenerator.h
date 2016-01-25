@@ -64,7 +64,7 @@ private:
 	wxComboBox *m_fontSizePicker;
 	//wxChoice *m_encodingPicker;
 
-	//wxChoice *m_outputEncodingPicker;
+	wxChoice *m_outputEncodingPicker;
 	wxCheckBox *m_compressionCheckbox;
 
 	wxTextCtrl *m_addCodepageStartTextbox;

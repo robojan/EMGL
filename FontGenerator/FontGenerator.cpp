@@ -57,6 +57,13 @@ FontGeneratorFrame::FontGeneratorFrame(const wxString &title,
 	wxPanel *addCodepage = CreateNewCodePagePanel(optionsPanel);
 	m_compressionCheckbox = new wxCheckBox(optionsPanel, wxID_ANY, _("Use compression"));
 	m_compressionCheckbox->SetValue(true);
+	wxArrayString outputFormats;
+	outputFormats.Add(_("1 bit per pixel"));
+	outputFormats.Add(_("2 bits per pixel"));
+	outputFormats.Add(_("4 bits per pixel"));
+	outputFormats.Add(_("8 bits per pixel"));
+	m_outputEncodingPicker = new wxChoice(optionsPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, outputFormats);
+	m_outputEncodingPicker->Select(1);
 	wxButton *saveOutputButton = new wxButton(optionsPanel, wxID_ANY, _("Generate fonts"));
 	saveOutputButton->Bind(wxEVT_BUTTON, &FontGeneratorFrame::OnSaveOutputButton, this);
 	
@@ -71,6 +78,7 @@ FontGeneratorFrame::FontGeneratorFrame(const wxString &title,
 	optionsSizer->Add(useSizer, 0, wxEXPAND, 3);
 	optionsSizer->AddStretchSpacer(1);
 	optionsSizer->Add(m_compressionCheckbox, 0, wxEXPAND, 3);
+	optionsSizer->Add(m_outputEncodingPicker, 0, wxEXPAND, 3);
 	optionsSizer->Add(saveOutputButton, 0, wxEXPAND, 3);
 
 
@@ -540,7 +548,7 @@ void FontGeneratorFrame::OnSaveOutputButton(wxCommandEvent &evt)
 	for (it = m_dataGenerators.begin(); it != m_dataGenerators.end(); ++it) {
 		if ((*it)->IsFilenameSupported(fileName)) {
 			(*it)->SaveCharmap(m_charmapWidget->GetCharmapTable()->GetCharMap(), 
-				m_compressionCheckbox->IsChecked(), FMT_2BPP, path);
+				m_compressionCheckbox->IsChecked(), (enum OutputFormat) m_outputEncodingPicker->GetSelection(), path);
 			return;
 		}
 	}
