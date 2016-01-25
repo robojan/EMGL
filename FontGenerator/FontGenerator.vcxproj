@@ -85,6 +85,7 @@
     <ClCompile Include="fontInfo.cpp" />
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="fontPreview.cpp" />
+    <ClCompile Include="OutputHelper.cpp" />
     <ClCompile Include="types.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -100,6 +101,7 @@
     <ClInclude Include="id.h" />
     <ClInclude Include="IDataGenerator.h" />
     <ClInclude Include="memdbg.h" />
+    <ClInclude Include="OutputHelper.h" />
     <ClInclude Include="types.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -6,6 +6,7 @@
 #include "charmap.h"
 #include "font.h"
 #include "fontManager.h"
+#include "OutputHelper.h"
 
 BinaryDataGenerator::BinaryDataGenerator()
 {
@@ -26,7 +27,8 @@ bool BinaryDataGenerator::IsFilenameSupported(const wxFileName &fileName)
 	return fileName.GetExt() == "bin";
 }
 
-void BinaryDataGenerator::SaveCharmap(const CharMap &charmap, bool compress, const wxString &filePath)
+void BinaryDataGenerator::SaveCharmap(const CharMap &charmap, bool compress,
+	enum OutputFormat format, const wxString &filePath)
 {
 	// Try opening the file for writing
 	wxFFileOutputStream file(filePath);
@@ -47,7 +49,8 @@ void BinaryDataGenerator::SaveCharmap(const CharMap &charmap, bool compress, con
 	// TODO: add compression
 	// Write header
 	wxUint32 magic = 'EMGF';
-	wxUint8 flags = 0; 
+	wxUint8 flags = format;
+	if (compress) flags |= FLAG_COMPRESSED;
 	int ascender = 0;
 	int ascenderDiv = 0;
 	out.Write32(magic);
@@ -92,6 +95,7 @@ void BinaryDataGenerator::SaveCharmap(const CharMap &charmap, bool compress, con
 				continue;
 			}
 			wxPoint advance = m_loadedFont.GetGlyphAdvance(glyph);
+			wxPoint bitmapTL = m_loadedFont.GetGlyphBitmapTL(glyph);
 			int bitmapWidth, bitmapHeight;
 			int bitmapSize = m_loadedFont.GetGlyphBitmap(glyph, NULL, &bitmapWidth, &bitmapHeight);
 			if (bitmapSize < 0) {
@@ -102,7 +106,13 @@ void BinaryDataGenerator::SaveCharmap(const CharMap &charmap, bool compress, con
 			wxUint8 *bitmap = new wxUint8[bitmapSize];
 			int result = m_loadedFont.GetGlyphBitmap(glyph, bitmap, &bitmapWidth, &bitmapHeight);
 			wxASSERT(result == bitmapSize);
-			wxPoint bitmapTL = m_loadedFont.GetGlyphBitmapTL(glyph);
+
+			bitmapSize = ConvertToFormat(bitmap, bitmapSize, format);
+
+			if (compress) {
+				CompressBitmap(&bitmap, &bitmapSize,  bitmapWidth * bitmapHeight, format);
+				DecompressBitmap(&bitmap, &bitmapSize, bitmapWidth * bitmapHeight, format);
+			}
 
 			ascender += m_loadedFont.GetAscender();
 			ascenderDiv++;
@@ -115,11 +125,9 @@ void BinaryDataGenerator::SaveCharmap(const CharMap &charmap, bool compress, con
 			out.Write16((wxUint16)bitmapWidth);
 			out.Write16((wxUint16)bitmapHeight);
 			out.Write32(bitmapSize);
-			file.Write(bitmap, bitmapSize);
-			file.Sync();
+			file.Write(bitmap, bitmapSize & ~(1<<31));
 		}
 	}
-	file.Sync();
 	// Write glyph pointers
 	it = charmap.CBegin();
 	for (int i = 0; i < numCodePages; i++) {

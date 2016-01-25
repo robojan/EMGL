@@ -540,7 +540,7 @@ void FontGeneratorFrame::OnSaveOutputButton(wxCommandEvent &evt)
 	for (it = m_dataGenerators.begin(); it != m_dataGenerators.end(); ++it) {
 		if ((*it)->IsFilenameSupported(fileName)) {
 			(*it)->SaveCharmap(m_charmapWidget->GetCharmapTable()->GetCharMap(), 
-				m_compressionCheckbox->IsChecked(), path);
+				m_compressionCheckbox->IsChecked(), FMT_2BPP, path);
 			return;
 		}
 	}
