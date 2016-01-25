@@ -111,7 +111,6 @@ void BinaryDataGenerator::SaveCharmap(const CharMap &charmap, bool compress,
 
 			if (compress) {
 				CompressBitmap(&bitmap, &bitmapSize,  bitmapWidth * bitmapHeight, format);
-				DecompressBitmap(&bitmap, &bitmapSize, bitmapWidth * bitmapHeight, format);
 			}
 
 			ascender += m_loadedFont.GetAscender();

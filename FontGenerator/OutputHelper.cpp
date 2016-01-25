@@ -165,7 +165,7 @@ void DecompressBitmap(wxUint8 **buffer, int *bufferSize, int numPixels, enum Out
 		int elementSizeBytes = (bit + elementSize + 7) / 8;
 		wxUint16 element = 0;
 		int elementBitsRead = 0;
-		for (unsigned int i = 0; i < elementSizeBytes; i++) {
+		for (int i = 0; i < elementSizeBytes; i++) {
 			int bitsFree = 8 - bit;
 			int bitsToRead = (elementSize - elementBitsRead) > bitsFree ? bitsFree : (elementSize - elementBitsRead);
 			wxUint8 elementMask = 0xFF >> (8 - bitsToRead);
@@ -174,11 +174,13 @@ void DecompressBitmap(wxUint8 **buffer, int *bufferSize, int numPixels, enum Out
 		}
 		int repeat = element & 0xF;
 		wxUint8 value = (element >> 4) & mask;
-		for (int i = 0; i < repeat; ++i) {
+		for (int j = 0; i + j < numPixels && j < repeat; ++j) {
 			int outIdx = outBitPos / 8;
 			int outBit = outBitPos & 7;
 			outBuffer[outIdx] = (outBuffer[outIdx] & ~(mask << outBit)) | (value << outBit);
-		}
+			outBitPos += bpp;
+		} 
+		i += repeat;
 	}
 	delete[] * buffer;
 	*buffer = outBuffer;
