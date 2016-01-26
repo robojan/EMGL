@@ -14,15 +14,15 @@ const emgl_driverAPI_t *pcdrv_CreateDriver();
 
 void pcdrv_init(void *api);
 void pcdrv_poll(void *api);
-void pcdrv_fillRect(void *api, coord_t x1, coord_t y1, coord_t x2,
-		coord_t y2, emgl_color_t lcdColor);
-void pcdrv_drawLineH(void *api, coord_t x1, coord_t x2, coord_t y,
+void pcdrv_fillRect(void *api, emgl_coord_t x1, emgl_coord_t y1, emgl_coord_t x2,
+		emgl_coord_t y2, emgl_color_t lcdColor);
+void pcdrv_drawLineH(void *api, emgl_coord_t x1, emgl_coord_t x2, emgl_coord_t y,
 		emgl_color_t lcdColor);
-void pcdrv_drawLineV(void *api, coord_t y1, coord_t y2, coord_t x,
+void pcdrv_drawLineV(void *api, emgl_coord_t y1, emgl_coord_t y2, emgl_coord_t x,
 		emgl_color_t lcdColor);
-emgl_color_t pcdrv_getPixel(void *api, coord_t x, coord_t y);
-void pcdrv_setPixel(void *api, coord_t x, coord_t y, emgl_color_t lcdColor);
-void pcdrv_drawBitmap(void *api, coord_t x, coord_t y, coord_t width,
-	coord_t height, const emgl_color_t *data);
-void pcdrv_getSize(void *api, coord_t *width, coord_t *height);
+emgl_color_t pcdrv_getPixel(void *api, emgl_coord_t x, emgl_coord_t y);
+void pcdrv_setPixel(void *api, emgl_coord_t x, emgl_coord_t y, emgl_color_t lcdColor);
+void pcdrv_drawBitmap(void *api, emgl_coord_t x, emgl_coord_t y, emgl_coord_t width,
+	emgl_coord_t height, const emgl_color_t *data);
+void pcdrv_getSize(void *api, emgl_coord_t *width, emgl_coord_t *height);
 #endif

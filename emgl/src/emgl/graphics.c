@@ -7,12 +7,12 @@
 void emgl_clear(emgl_color_t clearColor)
 {
 	EMGL_ASSERT("g_emgl_activeDriver != NULL", g_emgl_activeDriver != NULL);
-	coord_t width,  height;
+	emgl_coord_t width,  height;
 	DRIVER->getSize(DRIVER->api, &width, &height);
 	DRIVER->fillRect(DRIVER->api, 0, 0, width, height, clearColor);
 }
 
-void emgl_drawRectangle(coord_t x, coord_t y, coord_t width, coord_t height, 
+void emgl_drawRectangle(emgl_coord_t x, emgl_coord_t y, emgl_coord_t width, emgl_coord_t height, 
 	emgl_color_t color)
 {
 	EMGL_ASSERT("g_emgl_activeDriver != NULL", g_emgl_activeDriver != NULL);
@@ -27,7 +27,7 @@ void emgl_drawRectangle(coord_t x, coord_t y, coord_t width, coord_t height,
 	DRIVER->drawLineV(DRIVER->api, y + 1, y + height - 2, x + width -1, color);
 }
 
-void emgl_drawFilledRectangle(coord_t x, coord_t y, coord_t width, coord_t height, emgl_color_t color)
+void emgl_drawFilledRectangle(emgl_coord_t x, emgl_coord_t y, emgl_coord_t width, emgl_coord_t height, emgl_color_t color)
 {
 	EMGL_ASSERT("g_emgl_activeDriver != NULL", g_emgl_activeDriver != NULL);
 	EMGL_ASSERT("width >= 0 && height >= 0", width >= 0 && height >= 0);
@@ -38,7 +38,7 @@ void emgl_drawFilledRectangle(coord_t x, coord_t y, coord_t width, coord_t heigh
 	DRIVER->fillRect(DRIVER->api, x, y, x+width-1, y+height-1, color);
 }
 
-void emgl_drawCircle(coord_t xo, coord_t yo, coord_t r, emgl_color_t color)
+void emgl_drawCircle(emgl_coord_t xo, emgl_coord_t yo, emgl_coord_t r, emgl_color_t color)
 {
 	EMGL_ASSERT("g_emgl_activeDriver != NULL", g_emgl_activeDriver != NULL);
 	EMGL_ASSERT("r >= 0", r >= 0);
@@ -46,9 +46,9 @@ void emgl_drawCircle(coord_t xo, coord_t yo, coord_t r, emgl_color_t color)
 	{
 		return;
 	}
-	coord_t x = r;
-	coord_t y = 0;
-	coord_t re = 1-x;
+	emgl_coord_t x = r;
+	emgl_coord_t y = 0;
+	emgl_coord_t re = 1-x;
 
 	while (x >= y)
 	{
@@ -72,7 +72,7 @@ void emgl_drawCircle(coord_t xo, coord_t yo, coord_t r, emgl_color_t color)
 	}
 }
 
-void emgl_drawFilledCircle(coord_t xo, coord_t yo, coord_t r, emgl_color_t color)
+void emgl_drawFilledCircle(emgl_coord_t xo, emgl_coord_t yo, emgl_coord_t r, emgl_color_t color)
 {
 	EMGL_ASSERT("g_emgl_activeDriver != NULL", g_emgl_activeDriver != NULL);
 	EMGL_ASSERT("r >= 0", r >= 0);
@@ -80,9 +80,9 @@ void emgl_drawFilledCircle(coord_t xo, coord_t yo, coord_t r, emgl_color_t color
 	{
 		return;
 	}
-	coord_t x = r;
-	coord_t y = 0;
-	coord_t re = 1 - x;
+	emgl_coord_t x = r;
+	emgl_coord_t y = 0;
+	emgl_coord_t re = 1 - x;
 
 	while (x >= y)
 	{
@@ -103,7 +103,7 @@ void emgl_drawFilledCircle(coord_t xo, coord_t yo, coord_t r, emgl_color_t color
 
 }
 
-void emgl_drawEllipse(coord_t xo, coord_t yo, coord_t width, coord_t height, emgl_color_t color)
+void emgl_drawEllipse(emgl_coord_t xo, emgl_coord_t yo, emgl_coord_t width, emgl_coord_t height, emgl_color_t color)
 {
 	EMGL_ASSERT("g_emgl_activeDriver != NULL", g_emgl_activeDriver != NULL);
 	if (width == 0 || height == 0)
@@ -115,13 +115,13 @@ void emgl_drawEllipse(coord_t xo, coord_t yo, coord_t width, coord_t height, emg
 	width /= 2;
 	height /= 2;
 
-	coord_t twoASquare = 2 * width * width;
-	coord_t twoBSquare = 2 * height * height;
-	coord_t error = width * width * height;
-	coord_t x = 0;
-	coord_t y = height;
-	coord_t stopy = 0;
-	coord_t stopx = twoASquare*height;
+	emgl_coord_t twoASquare = 2 * width * width;
+	emgl_coord_t twoBSquare = 2 * height * height;
+	emgl_coord_t error = width * width * height;
+	emgl_coord_t x = 0;
+	emgl_coord_t y = height;
+	emgl_coord_t stopy = 0;
+	emgl_coord_t stopx = twoASquare*height;
 
 	while (stopy <= stopx)
 	{
@@ -163,7 +163,7 @@ void emgl_drawEllipse(coord_t xo, coord_t yo, coord_t width, coord_t height, emg
 	}
 }
 
-void emgl_drawFilledEllipse(coord_t xo, coord_t yo, coord_t width, coord_t height, emgl_color_t color)
+void emgl_drawFilledEllipse(emgl_coord_t xo, emgl_coord_t yo, emgl_coord_t width, emgl_coord_t height, emgl_color_t color)
 {
 	EMGL_ASSERT("g_emgl_activeDriver != NULL", g_emgl_activeDriver != NULL);
 	if (width == 0 || height == 0)
@@ -175,13 +175,13 @@ void emgl_drawFilledEllipse(coord_t xo, coord_t yo, coord_t width, coord_t heigh
 	width /= 2;
 	height /= 2;
 
-	coord_t twoASquare = 2 * width * width;
-	coord_t twoBSquare = 2 * height * height;
-	coord_t error = width * width * height;
-	coord_t x = 0;
-	coord_t y = height;
-	coord_t stopy = 0;
-	coord_t stopx = twoASquare*height;
+	emgl_coord_t twoASquare = 2 * width * width;
+	emgl_coord_t twoBSquare = 2 * height * height;
+	emgl_coord_t error = width * width * height;
+	emgl_coord_t x = 0;
+	emgl_coord_t y = height;
+	emgl_coord_t stopy = 0;
+	emgl_coord_t stopx = twoASquare*height;
 
 	while (stopy <= stopx)
 	{
@@ -219,23 +219,23 @@ void emgl_drawFilledEllipse(coord_t xo, coord_t yo, coord_t width, coord_t heigh
 	}
 }
 
-void emgl_drawArcP(coord_t xo, coord_t yo, coord_t startx, coord_t starty, coord_t endx, coord_t endy, emgl_color_t color)
+void emgl_drawArcP(emgl_coord_t xo, emgl_coord_t yo, emgl_coord_t startx, emgl_coord_t starty, emgl_coord_t endx, emgl_coord_t endy, emgl_color_t color)
 {
 	EMGL_ASSERT("emgl_drawArcP: g_emgl_activeDriver != NULL", g_emgl_activeDriver != NULL);
 	EMGL_ASSERT("emgl_drawArcP: radius must be constant between start and end", 
 		(startx - xo)*(startx - xo) + (starty - yo)*(starty - yo) == 
 		(endx - xo)*(endx - xo) + (endy - yo)*(endy - yo));
-	coord_t x = startx - xo;
-	coord_t y = starty - yo;
-	coord_t r = x * x + y * y;
-	coord_t re = r;
+	emgl_coord_t x = startx - xo;
+	emgl_coord_t y = starty - yo;
+	emgl_coord_t r = x * x + y * y;
+	emgl_coord_t re = r;
 	endx -= xo;
 	endy -= yo;
 	while (x != endx || y != endy)
 	{
 		DRIVER->setPixel(DRIVER->api, x + xo, y + yo, color);
-		coord_t rx, ry, rd;
-		coord_t dx, dy;
+		emgl_coord_t rx, ry, rd;
+		emgl_coord_t dx, dy;
 		if (x < 0)
 		{
 			ry = re - 2 * y + 1;
@@ -255,9 +255,9 @@ void emgl_drawArcP(coord_t xo, coord_t yo, coord_t startx, coord_t starty, coord
 			dx = -1;
 		}
 		rd = rx + ry - re;
-		coord_t ex = r - rx;
-		coord_t ey = r - ry;
-		coord_t ed = r - rd;
+		emgl_coord_t ex = r - rx;
+		emgl_coord_t ey = r - ry;
+		emgl_coord_t ed = r - rd;
 		if (ey < 0) ey = -ey;
 		if (ex < 0) ex = -ex;
 		if (ed < 0) ed = -ed;
@@ -281,23 +281,23 @@ void emgl_drawArcP(coord_t xo, coord_t yo, coord_t startx, coord_t starty, coord
 	}
 }
 
-void emgl_drawFilledArcP(coord_t xo, coord_t yo, coord_t startx, coord_t starty, coord_t endx, coord_t endy, emgl_color_t color)
+void emgl_drawFilledArcP(emgl_coord_t xo, emgl_coord_t yo, emgl_coord_t startx, emgl_coord_t starty, emgl_coord_t endx, emgl_coord_t endy, emgl_color_t color)
 {
 	EMGL_ASSERT("g_emgl_activeDriver != NULL", g_emgl_activeDriver != NULL);
 	/*EMGL_ASSERT("emgl_drawArcP: radius must be constant between start and end",
 		(startx - xo)*(startx - xo) + (starty - yo)*(starty - yo) ==
 		(endx - xo)*(endx - xo) + (endy - yo)*(endy - yo));*/
-	coord_t x = startx - xo;
-	coord_t y = starty - yo;
-	coord_t r = x * x + y * y;
-	coord_t re = r;
+	emgl_coord_t x = startx - xo;
+	emgl_coord_t y = starty - yo;
+	emgl_coord_t r = x * x + y * y;
+	emgl_coord_t re = r;
 	endx -= xo;
 	endy -= yo;
 	while (x != endx || y != endy)
 	{
 		DRIVER->drawLineH(DRIVER->api, xo, xo + x, yo + y, color);
-		coord_t rx, ry, rd;
-		coord_t dx, dy;
+		emgl_coord_t rx, ry, rd;
+		emgl_coord_t dx, dy;
 		if (x < 0)
 		{
 			ry = re - 2 * y + 1;
@@ -317,9 +317,9 @@ void emgl_drawFilledArcP(coord_t xo, coord_t yo, coord_t startx, coord_t starty,
 			dx = -1;
 		}
 		rd = rx + ry - re;
-		coord_t ex = r - rx;
-		coord_t ey = r - ry;
-		coord_t ed = r - rd;
+		emgl_coord_t ex = r - rx;
+		emgl_coord_t ey = r - ry;
+		emgl_coord_t ed = r - rd;
 		if (ey < 0) ey = -ey;
 		if (ex < 0) ex = -ex;
 		if (ed < 0) ed = -ed;
@@ -344,7 +344,7 @@ void emgl_drawFilledArcP(coord_t xo, coord_t yo, coord_t startx, coord_t starty,
 
 }
 
-void emgl_drawRoundedRectangle(coord_t x, coord_t y, coord_t width, coord_t height, coord_t r, emgl_color_t color)
+void emgl_drawRoundedRectangle(emgl_coord_t x, emgl_coord_t y, emgl_coord_t width, emgl_coord_t height, emgl_coord_t r, emgl_color_t color)
 {
 	EMGL_ASSERT("g_emgl_activeDriver != NULL", g_emgl_activeDriver != NULL);
 	EMGL_ASSERT("width >= 0 && height >= 0", width >= 0 && height >= 0);
@@ -356,14 +356,14 @@ void emgl_drawRoundedRectangle(coord_t x, coord_t y, coord_t width, coord_t heig
 	DRIVER->drawLineH(DRIVER->api, x + r, x + width - r - 1, y + height - 1, color);
 	DRIVER->drawLineV(DRIVER->api, y + r, y + height - r - 1, x, color);
 	DRIVER->drawLineV(DRIVER->api, y + r, y + height - r - 1, x + width - 1, color);
-	coord_t xc = r;
-	coord_t yc = 0;
-	coord_t re = 1 - xc;
+	emgl_coord_t xc = r;
+	emgl_coord_t yc = 0;
+	emgl_coord_t re = 1 - xc;
 
 	while (xc >= yc)
 	{
-		coord_t xo = x + width - r - 1;
-		coord_t yo = y + height - r - 1;
+		emgl_coord_t xo = x + width - r - 1;
+		emgl_coord_t yo = y + height - r - 1;
 		DRIVER->setPixel(DRIVER->api, xc + xo, yc + yo, color);
 		DRIVER->setPixel(DRIVER->api, yc + xo, xc + yo, color);
 		yo = y + r;
@@ -387,7 +387,7 @@ void emgl_drawRoundedRectangle(coord_t x, coord_t y, coord_t width, coord_t heig
 	}
 }
 
-void emgl_drawFilledRoundedRectangle(coord_t x, coord_t y, coord_t width, coord_t height, coord_t r, emgl_color_t color)
+void emgl_drawFilledRoundedRectangle(emgl_coord_t x, emgl_coord_t y, emgl_coord_t width, emgl_coord_t height, emgl_coord_t r, emgl_color_t color)
 {
 	EMGL_ASSERT("g_emgl_activeDriver != NULL", g_emgl_activeDriver != NULL);
 	EMGL_ASSERT("width >= 0 && height >= 0", width >= 0 && height >= 0);
@@ -399,14 +399,14 @@ void emgl_drawFilledRoundedRectangle(coord_t x, coord_t y, coord_t width, coord_
 	DRIVER->fillRect(DRIVER->api, x + r, y, x + width - r - 1, y + r, color);
 	DRIVER->fillRect(DRIVER->api, x + r, y + height - r - 1, x + width - r - 1, y + height - 1, color);
 
-	coord_t xc = r;
-	coord_t yc = 0;
-	coord_t re = 1 - xc;
+	emgl_coord_t xc = r;
+	emgl_coord_t yc = 0;
+	emgl_coord_t re = 1 - xc;
 
 	while (xc >= yc)
 	{
-		coord_t xo = x + width - r - 1;
-		coord_t yo = y + height - r - 1;
+		emgl_coord_t xo = x + width - r - 1;
+		emgl_coord_t yo = y + height - r - 1;
 		DRIVER->drawLineH(DRIVER->api, xo, xc +xo, yc +yo, color);
 		DRIVER->drawLineH(DRIVER->api, xo, yc + xo, xc + yo, color);
 		yo = y + r;
@@ -430,7 +430,7 @@ void emgl_drawFilledRoundedRectangle(coord_t x, coord_t y, coord_t width, coord_
 	}
 }
 
-void emgl_drawPolygon(coord_t *x, coord_t *y, U8 count, emgl_color_t color)
+void emgl_drawPolygon(emgl_coord_t *x, emgl_coord_t *y, U8 count, emgl_color_t color)
 {
 	EMGL_ASSERT("g_emgl_activeDriver != NULL", g_emgl_activeDriver != NULL);
 
@@ -441,20 +441,20 @@ void emgl_drawPolygon(coord_t *x, coord_t *y, U8 count, emgl_color_t color)
 	emgl_drawLine(x[count-1], y[count-1], x[0], y[0],color);
 }
 
-void emgl_drawFilledPolygon(coord_t *x, coord_t *y, U8 count, emgl_color_t color)
+void emgl_drawFilledPolygon(emgl_coord_t *x, emgl_coord_t *y, U8 count, emgl_color_t color)
 {
 	EMGL_ASSERT("g_emgl_activeDriver != NULL", g_emgl_activeDriver != NULL);
 
 	EMGL_LOG(EMGL_LOGLVL_WARN, "emgl_drawFilledPolygon not implemented");
 }
 
-void emgl_drawBitmap(coord_t x, coord_t y, coord_t width, coord_t height, emgl_color_t *data)
+void emgl_drawBitmap(emgl_coord_t x, emgl_coord_t y, emgl_coord_t width, emgl_coord_t height, emgl_color_t *data)
 {
 	EMGL_ASSERT("g_emgl_activeDriver != NULL", g_emgl_activeDriver != NULL);
 	DRIVER->drawBitmap(DRIVER->api, x, y, width, height, data);
 }
 
-void emgl_drawLine(coord_t x1, coord_t y1, coord_t x2, coord_t y2, emgl_color_t color)
+void emgl_drawLine(emgl_coord_t x1, emgl_coord_t y1, emgl_coord_t x2, emgl_coord_t y2, emgl_color_t color)
 {
 	EMGL_ASSERT("g_emgl_activeDriver != NULL", g_emgl_activeDriver != NULL);
 	if (x1 == x2)
@@ -468,26 +468,26 @@ void emgl_drawLine(coord_t x1, coord_t y1, coord_t x2, coord_t y2, emgl_color_t 
 		return;
 	}
 
-	coord_t w = x2-x1;
-	coord_t h = y2-y1;
-	coord_t dx1 = 0;
-	coord_t dy1 = 0;
-	coord_t dy2 = 0;
+	emgl_coord_t w = x2-x1;
+	emgl_coord_t h = y2-y1;
+	emgl_coord_t dx1 = 0;
+	emgl_coord_t dy1 = 0;
+	emgl_coord_t dy2 = 0;
 	if (w < 0) dx1 = -1; else if (w > 0) dx1 = 1;
 	if (h < 0) dy1 = -1; else if (h > 0) dy1 = 1;
-	coord_t dx2 = dx1;
-	coord_t longest = w < 0 ? -w : w;
-	coord_t shortest = h < 0 ? -h : h;
+	emgl_coord_t dx2 = dx1;
+	emgl_coord_t longest = w < 0 ? -w : w;
+	emgl_coord_t shortest = h < 0 ? -h : h;
 	if (longest <= shortest)
 	{
-		coord_t t = longest;
+		emgl_coord_t t = longest;
 		longest = shortest;
 		shortest = t;
 		if (h<0) dy2 = -1; else if (h > 0) dy2 = 1;
 		dx2 = 0;
 	}
-	coord_t numerator = longest / 2;
-	for (coord_t i = 0; i <= longest; i++)
+	emgl_coord_t numerator = longest / 2;
+	for (emgl_coord_t i = 0; i <= longest; i++)
 	{
 		DRIVER->setPixel(DRIVER->api, x1, y1, color);
 		numerator += shortest;
@@ -504,7 +504,7 @@ void emgl_drawLine(coord_t x1, coord_t y1, coord_t x2, coord_t y2, emgl_color_t 
 	}
 }
 
-void emgl_drawBezier(coord_t *x, coord_t *y, U8 count, emgl_color_t color)
+void emgl_drawBezier(emgl_coord_t *x, emgl_coord_t *y, U8 count, emgl_color_t color)
 {
 	EMGL_ASSERT("g_emgl_activeDriver != NULL", g_emgl_activeDriver != NULL);
 

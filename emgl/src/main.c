@@ -67,8 +67,8 @@ int main(int argc, char **argv)
 	emgl_drawFilledRoundedRectangle(260, 140, 30, 30, 10, COLOR_GREEN);
 	emgl_drawFilledRoundedRectangle(260, 180, 30, 30, 10, COLOR_NAVY);	
 
-	coord_t x [] = {280, 310, 315, 300};
-	coord_t y [] = {30, 40, 65, 70};
+	emgl_coord_t x [] = {280, 310, 315, 300};
+	emgl_coord_t y [] = {30, 40, 65, 70};
 
 	emgl_drawPolygon(x, y, 4, COLOR_GREEN);
 	x[0] -= 50;

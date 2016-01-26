@@ -5,23 +5,23 @@
 #include <emgl/types.h>
 
 void emgl_clear(emgl_color_t clearColor);
-void emgl_drawRectangle(coord_t x, coord_t y, coord_t width, coord_t height, emgl_color_t color);
-void emgl_drawFilledRectangle(coord_t x, coord_t y, coord_t width, coord_t height, emgl_color_t color);
-void emgl_drawCircle(coord_t x, coord_t y, coord_t r, emgl_color_t color);
-void emgl_drawFilledCircle(coord_t x, coord_t y, coord_t r, emgl_color_t color);
-void emgl_drawEllipse(coord_t x, coord_t y, coord_t width, coord_t height, emgl_color_t color);
-void emgl_drawFilledEllipse(coord_t x, coord_t y, coord_t width, coord_t height, emgl_color_t color);
-void emgl_drawArc(coord_t x, coord_t y, I16 startAngle, I16 stopAngle, emgl_color_t color);
-void emgl_drawFilledArc(coord_t x, coord_t y, I16 startAngle, I16 stopAngle, emgl_color_t color);
-void emgl_drawArcP(coord_t x, coord_t y, coord_t startx, coord_t starty, coord_t endx, coord_t endy, emgl_color_t color);
-void emgl_drawFilledArcP(coord_t x, coord_t y, coord_t startx, coord_t starty, coord_t endx, coord_t endy, emgl_color_t color);
-void emgl_drawRoundedRectangle(coord_t x, coord_t y, coord_t width, coord_t height, coord_t r, emgl_color_t color);
-void emgl_drawFilledRoundedRectangle(coord_t x, coord_t y, coord_t width, coord_t height, coord_t r, emgl_color_t color);
-void emgl_drawPolygon(coord_t *x, coord_t *y, U8 count, emgl_color_t color);
-void emgl_drawFilledPolygon(coord_t *x, coord_t *y, U8 count, emgl_color_t color);
-void emgl_drawBitmap(coord_t x, coord_t y, coord_t width, coord_t height, emgl_color_t *data);
-void emgl_drawLine(coord_t x1, coord_t y1, coord_t x2, coord_t y2, emgl_color_t color);
-void emgl_drawBezier(coord_t *x, coord_t *y, U8 count, emgl_color_t color);
+void emgl_drawRectangle(emgl_coord_t x, emgl_coord_t y, emgl_coord_t width, emgl_coord_t height, emgl_color_t color);
+void emgl_drawFilledRectangle(emgl_coord_t x, emgl_coord_t y, emgl_coord_t width, emgl_coord_t height, emgl_color_t color);
+void emgl_drawCircle(emgl_coord_t x, emgl_coord_t y, emgl_coord_t r, emgl_color_t color);
+void emgl_drawFilledCircle(emgl_coord_t x, emgl_coord_t y, emgl_coord_t r, emgl_color_t color);
+void emgl_drawEllipse(emgl_coord_t x, emgl_coord_t y, emgl_coord_t width, emgl_coord_t height, emgl_color_t color);
+void emgl_drawFilledEllipse(emgl_coord_t x, emgl_coord_t y, emgl_coord_t width, emgl_coord_t height, emgl_color_t color);
+void emgl_drawArc(emgl_coord_t x, emgl_coord_t y, I16 startAngle, I16 stopAngle, emgl_color_t color);
+void emgl_drawFilledArc(emgl_coord_t x, emgl_coord_t y, I16 startAngle, I16 stopAngle, emgl_color_t color);
+void emgl_drawArcP(emgl_coord_t x, emgl_coord_t y, emgl_coord_t startx, emgl_coord_t starty, emgl_coord_t endx, emgl_coord_t endy, emgl_color_t color);
+void emgl_drawFilledArcP(emgl_coord_t x, emgl_coord_t y, emgl_coord_t startx, emgl_coord_t starty, emgl_coord_t endx, emgl_coord_t endy, emgl_color_t color);
+void emgl_drawRoundedRectangle(emgl_coord_t x, emgl_coord_t y, emgl_coord_t width, emgl_coord_t height, emgl_coord_t r, emgl_color_t color);
+void emgl_drawFilledRoundedRectangle(emgl_coord_t x, emgl_coord_t y, emgl_coord_t width, emgl_coord_t height, emgl_coord_t r, emgl_color_t color);
+void emgl_drawPolygon(emgl_coord_t *x, emgl_coord_t *y, U8 count, emgl_color_t color);
+void emgl_drawFilledPolygon(emgl_coord_t *x, emgl_coord_t *y, U8 count, emgl_color_t color);
+void emgl_drawBitmap(emgl_coord_t x, emgl_coord_t y, emgl_coord_t width, emgl_coord_t height, emgl_color_t *data);
+void emgl_drawLine(emgl_coord_t x1, emgl_coord_t y1, emgl_coord_t x2, emgl_coord_t y2, emgl_color_t color);
+void emgl_drawBezier(emgl_coord_t *x, emgl_coord_t *y, U8 count, emgl_color_t color);
 
 
 #endif

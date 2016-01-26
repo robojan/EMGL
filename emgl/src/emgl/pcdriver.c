@@ -38,20 +38,20 @@ const emgl_driverAPI_t *pcdrv_CreateDriver()
 	return &g_pcdrv;
 }
 
-void pcdrv_fillRect(void * api, coord_t x1, coord_t y1, coord_t x2, 
-	coord_t y2, emgl_color_t lcdColor)
+void pcdrv_fillRect(void * api, emgl_coord_t x1, emgl_coord_t y1, emgl_coord_t x2, 
+	emgl_coord_t y2, emgl_color_t lcdColor)
 {
 	struct _pcdrv_status *sts = api;
 	U32 color = emgl_colorConvToRGBA8888(lcdColor);
 	if (x1 > x2)
 	{
-		coord_t x = x1;
+		emgl_coord_t x = x1;
 		x1 = x2;
 		x2 = x;
 	}
 	if (y1 > y2)
 	{
-		coord_t y = y1;
+		emgl_coord_t y = y1;
 		y1 = y2;
 		y2 = y;
 	}
@@ -80,23 +80,23 @@ void pcdrv_fillRect(void * api, coord_t x1, coord_t y1, coord_t x2,
 		y2 = LCD_HEIGHT - 1;
 	}
 
-	for (coord_t x = x1; x <= x2; x++)
+	for (emgl_coord_t x = x1; x <= x2; x++)
 	{
-		for (coord_t y = y1; y <= y2; y++)
+		for (emgl_coord_t y = y1; y <= y2; y++)
 		{
 			sts->lcdBuffer[y*LCD_WIDTH+x] = color;
 		}
 	}
 }
 
-void pcdrv_drawLineH(void *api, coord_t x1, coord_t x2, coord_t y,
+void pcdrv_drawLineH(void *api, emgl_coord_t x1, emgl_coord_t x2, emgl_coord_t y,
 	emgl_color_t lcdColor)
 {
 	struct _pcdrv_status *sts = api;
 	U32 color = emgl_colorConvToRGBA8888(lcdColor);
 	if (x1 > x2)
 	{
-		coord_t x = x1;
+		emgl_coord_t x = x1;
 		x1 = x2;
 		x2 = x;
 	}
@@ -116,19 +116,19 @@ void pcdrv_drawLineH(void *api, coord_t x1, coord_t x2, coord_t y,
 	{
 		x2 = LCD_WIDTH - 1;
 	}
-	for (coord_t x = x1; x <= x2; x++)
+	for (emgl_coord_t x = x1; x <= x2; x++)
 	{
 		sts->lcdBuffer[y*LCD_WIDTH+x] = color;
 	}
 }
 
-void pcdrv_drawLineV(void *api, coord_t y1, coord_t y2, coord_t x,
+void pcdrv_drawLineV(void *api, emgl_coord_t y1, emgl_coord_t y2, emgl_coord_t x,
 	emgl_color_t lcdColor)
 {
 	struct _pcdrv_status *sts = api;
 	if (y1 > y2)
 	{
-		coord_t y = y1;
+		emgl_coord_t y = y1;
 		y1 = y2;
 		y2 = y;
 	}
@@ -150,13 +150,13 @@ void pcdrv_drawLineV(void *api, coord_t y1, coord_t y2, coord_t x,
 	}
 
 	U32 color = emgl_colorConvToRGBA8888(lcdColor);
-	for (coord_t y = y1; y <= y2; y++)
+	for (emgl_coord_t y = y1; y <= y2; y++)
 	{
 		sts->lcdBuffer[y*LCD_WIDTH + x] = color;
 	}
 }
 
-emgl_color_t pcdrv_getPixel(void * api, coord_t x, coord_t y)
+emgl_color_t pcdrv_getPixel(void * api, emgl_coord_t x, emgl_coord_t y)
 {
 	struct _pcdrv_status *sts = api;
 	if (x >= LCD_WIDTH || y >= LCD_HEIGHT || x < 0 || y < 0)
@@ -169,7 +169,7 @@ emgl_color_t pcdrv_getPixel(void * api, coord_t x, coord_t y)
 	return emgl_colorConvFromRGBA8888(sts->lcdBuffer[y*LCD_WIDTH + x]);
 }
 
-void pcdrv_setPixel(void * api, coord_t x, coord_t y,
+void pcdrv_setPixel(void * api, emgl_coord_t x, emgl_coord_t y,
 	emgl_color_t lcdColor)
 {
 	struct _pcdrv_status *sts = api;
@@ -185,16 +185,16 @@ void pcdrv_setPixel(void * api, coord_t x, coord_t y,
 	sts->lcdBuffer[y*LCD_WIDTH + x] = color;
 }
 
-void pcdrv_drawBitmap(void * api, coord_t x, coord_t y, coord_t width,
-	coord_t height, const emgl_color_t *data)
+void pcdrv_drawBitmap(void * api, emgl_coord_t x, emgl_coord_t y, emgl_coord_t width,
+	emgl_coord_t height, const emgl_color_t *data)
 {
 	EMGL_ASSERT("pcdrv_drawBitmap: width >= 0 && height >= 0",
 		width >= 0 && height >= 0);
 	struct _pcdrv_status *sts = api;
-	coord_t startx = 0;
-	coord_t starty = 0;
-	coord_t endx = width;
-	coord_t endy = height;
+	emgl_coord_t startx = 0;
+	emgl_coord_t starty = 0;
+	emgl_coord_t endx = width;
+	emgl_coord_t endy = height;
 
 	if (x < 0)
 	{
@@ -220,9 +220,9 @@ void pcdrv_drawBitmap(void * api, coord_t x, coord_t y, coord_t width,
 		return;
 	}
 
-	for (coord_t iy = starty; iy < endy; iy++)
+	for (emgl_coord_t iy = starty; iy < endy; iy++)
 	{
-		for (coord_t ix = startx; ix < endx; ix++)
+		for (emgl_coord_t ix = startx; ix < endx; ix++)
 		{
 			U32 color = emgl_colorConvToRGBA8888(emgl_colorModeGetPixel(data, iy*width+ix));
 
@@ -424,7 +424,7 @@ void pcdrv_poll(void * api)
 	}
 }
 
-void pcdrv_getSize(void *api, coord_t *width, coord_t *height)
+void pcdrv_getSize(void *api, emgl_coord_t *width, emgl_coord_t *height)
 {
 	(void)api;
 	if (width != NULL)

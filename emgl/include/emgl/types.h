@@ -7,7 +7,7 @@
 #define NULL 0
 #endif
 
-typedef int_fast16_t coord_t;
+typedef int_fast16_t emgl_coord_t;
 
 typedef uint32_t U32;
 typedef int32_t I32;

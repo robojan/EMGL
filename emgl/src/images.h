@@ -6,8 +6,8 @@
 #ifndef __BITMAP_DATA_T_
 #define __BITMAP_DATA_T_
 typedef struct _bitmap_data {
-	coord_t width;
-	coord_t height;
+	emgl_coord_t width;
+	emgl_coord_t height;
 	emgl_color_t const *const data;
 } bitmap_data_t;
 #endif
