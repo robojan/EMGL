@@ -4,6 +4,7 @@
 
 #include "IDataGenerator.h"
 
+int GetBpp(enum OutputFormat format);
 size_t Convert8BppTo1Bpp(wxUint8 *buffer, int bufferSize); // 8 pixels per byte
 size_t Convert8BppTo2Bpp(wxUint8 *buffer, int bufferSize); // 4 pixels per byte
 size_t Convert8BppTo4Bpp(wxUint8 *buffer, int bufferSize); // 2 pixels per byte

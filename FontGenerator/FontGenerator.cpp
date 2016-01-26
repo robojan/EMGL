@@ -12,6 +12,7 @@
 #include <wx/filename.h>
 #include "types.h"
 #include "BinaryDataGenerator.h"
+#include "SourceDataGenerator.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -43,6 +44,7 @@ FontGeneratorFrame::FontGeneratorFrame(const wxString &title,
 	wxFrame(NULL, wxID_ANY, title, pos, size)
 {
 	m_dataGenerators.push_back(new BinaryDataGenerator());
+	m_dataGenerators.push_back(new CSourceDataGenerator());
 
 
 	wxPanel *mainPanel = new wxPanel(this);

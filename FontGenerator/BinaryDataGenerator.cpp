@@ -71,7 +71,7 @@ void BinaryDataGenerator::SaveCharmap(const CharMap &charmap, bool compress,
 		out.Write32((*it)->GetRangeEnd());
 		const wxString &name = (*it)->GetName();
 		for (unsigned int j = 0; j < 16; ++j) {
-			out.Write8(j < name.Length() ? name[j] : 0);
+			out.Write8(j < name.Length() ? name.ToAscii()[j] : '\0');
 		}
 		glyphPtrs[i] = new wxUint32[(*it)->GetSize()];
 		file.SeekO(sizeof(wxUint32) * (*it)->GetSize(), wxFromCurrent);
@@ -125,6 +125,7 @@ void BinaryDataGenerator::SaveCharmap(const CharMap &charmap, bool compress,
 			out.Write16((wxUint16)bitmapHeight);
 			out.Write32(bitmapSize);
 			file.Write(bitmap, bitmapSize & ~(1<<31));
+			delete[] bitmap;
 		}
 	}
 	// Write glyph pointers
@@ -146,6 +147,7 @@ void BinaryDataGenerator::SaveCharmap(const CharMap &charmap, bool compress,
 		out.Write32(codepagePtrs[i]);
 	}
 	delete[] codepagePtrs;
+	delete[] glyphPtrs;
 
 	// Write font wide parameters
 	file.SeekO(sizeof(wxUint32));

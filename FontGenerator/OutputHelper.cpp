@@ -61,26 +61,8 @@ void CompressBitmap(wxUint8 **buffer, int *bufferSize, int numPixels, enum Outpu
 	wxASSERT(buffer != NULL);
 	wxASSERT(bufferSize != NULL);
 	wxASSERT_MSG((*bufferSize & (1 << 31)) == 0, "Tried to compress already compressed bitmap");
-	int bpp;
-	wxUint8 mask;
-	switch (format) {
-	case FMT_1BPP:
-		bpp = 1;
-		mask = 0x1;
-		break;
-	case FMT_2BPP:
-		bpp = 2;
-		mask = 0x3;
-		break;
-	case FMT_4BPP:
-		bpp = 4;
-		mask = 0xf;
-		break;
-	default:
-		bpp = 8;
-		mask = 0xff;
-		break;		
-	}
+	int bpp = GetBpp(format);
+	wxUint8 mask = 0xFF >> (8 - bpp);
 	std::vector<wxUint8> outBuffer;
 	int outBitPos = 0;
 	int outElementSize = 4 + bpp;
@@ -125,6 +107,25 @@ void CompressBitmap(wxUint8 **buffer, int *bufferSize, int numPixels, enum Outpu
 	}
 }
 
+int GetBpp(enum OutputFormat format) {
+	int bpp;
+	switch (format) {
+	case FMT_1BPP:
+		bpp = 1;
+		break;
+	case FMT_2BPP:
+		bpp = 2;
+		break;
+	case FMT_4BPP:
+		bpp = 4;
+		break;
+	default:
+		bpp = 8;
+		break;
+	}
+	return bpp;
+}
+
 void DecompressBitmap(wxUint8 **buffer, int *bufferSize, int numPixels, enum OutputFormat format)
 {
 	wxASSERT(buffer != NULL);
@@ -133,26 +134,8 @@ void DecompressBitmap(wxUint8 **buffer, int *bufferSize, int numPixels, enum Out
 		// Not compressed
 		return;
 	}
-	int bpp;
-	wxUint8 mask;
-	switch (format) {
-	case FMT_1BPP:
-		bpp = 1;
-		mask = 0x1;
-		break;
-	case FMT_2BPP:
-		bpp = 2;
-		mask = 0x3;
-		break;
-	case FMT_4BPP:
-		bpp = 4;
-		mask = 0xf;
-		break;
-	default:
-		bpp = 8;
-		mask = 0xff;
-		break;
-	}
+	int bpp = GetBpp(format);
+	wxUint8 mask = 0xFF >> (8 - bpp);
 
 	int outBufferSize = (numPixels * bpp + 7) / 8;
 	wxUint8 *outBuffer = new wxUint8[outBufferSize];
