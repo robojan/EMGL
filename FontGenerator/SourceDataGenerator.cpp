@@ -185,10 +185,10 @@ wxString CSourceDataGenerator::GetHeaderFile(wxString name)
 		cplusplus_begin + "\n" +
 		GetHeaderIncludes() + "\n" +
 		"// Choose between local declaration or remote declaration \n"
-		"//#include \"font_data.h\"\n"
+		"/*#include <emgl/font.h>\n"
 		"\n" +
 		GetStructureDeclaration() +
-		"\n\n" +
+		"*/\n\n" +
 		GetFontDeclaration(name) + "\n" + 
 		cplusplus_end + "\n" +
 		guard_end;
