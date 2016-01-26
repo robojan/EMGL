@@ -210,21 +210,21 @@ wxString CSourceDataGenerator::GetStructureDeclaration()
 		"\tuint16_t bitmapWidth;\n"
 		"\tuint16_t bitmapHeight;\n"
 		"\tuint32_t bitmapSize;\n"
-		"\tconst uint8_t const *bitmapData;\n"
+		"\tconst uint8_t * const bitmapData;\n"
 		"} EMGL_glyph_t;\n"
 		"\n"
 		"typedef struct {\n"
 		"\tuint32_t startCode;\n"
 		"\tuint32_t endCode;\n"
 		"\tchar name[17];\n"
-		"\tconst EMGL_glyph_t const * const *glyphPtrs;\n"
+		"\tconst EMGL_glyph_t * const * const glyphPtrs;\n"
 		"} EMGL_codePage_t;\n"
 		"\n"
 		"typedef struct {\n"
 		"\tint16_t ascender;\n"
 		"\tuint8_t bpp;\n"
 		"\tuint8_t numCodepages;\n"
-		"\tconst EMGL_codePage_t const *codePagePtrs;\n"
+		"\tconst EMGL_codePage_t * const codePagePtrs;\n"
 		"} EMGL_font_t;\n"
 		;
 }
@@ -248,7 +248,7 @@ void CSourceDataGenerator::LoadFont(wxString family, wxString style, float size,
 
 wxString CSourceDataGenerator::GetFontDeclaration(const wxString &name)
 {
-	return "extern EMGL_font_t font_" + name + ";\n";
+	return "extern const EMGL_font_t font_" + name + ";\n";
 }
 
 wxString CSourceDataGenerator::GetSourceIncludes(const wxString &name)
@@ -266,7 +266,7 @@ wxString CSourceDataGenerator::GetGlyphDataDefinitions(const EMGL_font_t *font)
 			if (ptr == NULL) continue;
 			int dataSize = ptr->bitmapSize& ~(1 << 31);
 			if (dataSize == 0) continue;
-			result += wxString::Format("static uint8_t glyphData_%d_%d[%d] = {%u", codepage, glyph, dataSize,
+			result += wxString::Format("const static uint8_t glyphData_%d_%d[%d] = {%u", codepage, glyph, dataSize,
 				ptr->bitmapData[0]);
 			for (int i = 1; i < dataSize; ++i) {
 				result += wxString::Format(",%u", ptr->bitmapData[i]);
@@ -286,7 +286,7 @@ wxString CSourceDataGenerator::GetGlyphDefinitions(const EMGL_font_t *font)
 			EMGL_glyph_t *ptr = font->codePagePtrs[codepage].glyphPtrs[glyph];
 			if (ptr == NULL) continue;
 			int dataSize = ptr->bitmapSize& ~(1 << 31);
-			result += wxString::Format("static EMGL_glyph_t glyph_%d_%d = {%d, %d, %d, %d, %u, %u, %u, ", 
+			result += wxString::Format("const static EMGL_glyph_t glyph_%d_%d = {%d, %d, %d, %d, %u, %u, %u, ", 
 				codepage, glyph, ptr->advanceX, ptr->advanceY, ptr->bitmapLeft, ptr->bitmapTop, ptr->bitmapWidth, ptr->bitmapHeight, 
 				ptr->bitmapSize);
 			if (dataSize == 0) {
@@ -306,9 +306,20 @@ wxString CSourceDataGenerator::GetGlyphTableDefinition(const EMGL_font_t *font)
 	for (int codepage = 0; codepage < font->numCodepages; ++codepage) {
 		int numGlyphs = font->codePagePtrs[codepage].endCode - font->codePagePtrs[codepage].startCode + 1;
 		if (numGlyphs <= 0) continue;
-		result += wxString::Format("static EMGL_glyph_t *glyphTable_%d[%d] = { &glyph_%d_0", codepage, numGlyphs, codepage);
+		result += wxString::Format("const static EMGL_glyph_t *glyphTable_%d[%d] = { ", codepage, numGlyphs);
+		if (font->codePagePtrs[codepage].glyphPtrs[0] == NULL) {
+			result += "(void *)0";
+		}
+		else {
+			result += wxString::Format("&glyph_%d_0", codepage);
+		}
 		for (int glyph = 1; glyph < numGlyphs; ++glyph) {
-			result += wxString::Format(", &glyph_%d_%d", codepage, glyph);
+			if (font->codePagePtrs[codepage].glyphPtrs[glyph] == NULL) {
+				result += ", (void *)0";
+			}
+			else {
+				result += wxString::Format(", &glyph_%d_%d", codepage, glyph);
+			}
 		}
 		result += " };\n";
 	}
@@ -317,7 +328,7 @@ wxString CSourceDataGenerator::GetGlyphTableDefinition(const EMGL_font_t *font)
 
 wxString CSourceDataGenerator::GetCodepageDefinitions(const EMGL_font_t *font)
 {
-	wxString result = wxString::Format("static EMGL_codePage_t codePageTable[%d] = {", font->numCodepages);
+	wxString result = wxString::Format("const static EMGL_codePage_t codePageTable[%d] = {", font->numCodepages);
 	bool first = true;
 	for (int codepage = 0; codepage < font->numCodepages; ++codepage) {
 		EMGL_codePage_t *page = &font->codePagePtrs[codepage];
@@ -340,7 +351,7 @@ wxString CSourceDataGenerator::GetCodepageDefinitions(const EMGL_font_t *font)
 wxString CSourceDataGenerator::GetFontDefinition(const EMGL_font_t *font, const wxString &name)
 {
 	wxString result;
-	result += wxString::Format("EMGL_font_t font_%s = {%d, %u, %u, codePageTable};\n",
+	result += wxString::Format("const EMGL_font_t font_%s = {%d, %u, %u, codePageTable};\n",
 		name.ToAscii(), font->ascender, font->bpp, font->numCodepages);
 	return result;
 }
