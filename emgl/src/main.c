@@ -3,6 +3,7 @@
 
 #include "images.h"
 #include "arial12.h"
+#include "arial8.h"
 
 int main(int argc, char **argv)
 {
@@ -81,6 +82,7 @@ int main(int argc, char **argv)
 	emgl_drawTextA(&font_arial12, "Hello world!!!", 220, 110, COLOR_BLACK);
 	emgl_drawTextA(&font_arial12, "Test 123", 220, 90, COLOR_GREEN);
 	emgl_drawTextA(&font_arial12, "HHHTTT :D", 220, 70, COLOR_PURPLE);
+	emgl_drawTextA(&font_arial12, "the quick brown fox jumped over the lazy dog. 1234567890", 0, 0, COLOR_RED);
 
 	//emgl_drawFilledArcP(165, 50, 191, 65, 142, 30, COLOR_YELLOW);
 

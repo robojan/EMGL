@@ -1,5 +1,5 @@
-#ifndef _FONT_ARIAL12_H_
-#define _FONT_ARIAL12_H_
+#ifndef _FONT_ARIAL8_H_
+#define _FONT_ARIAL8_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -36,7 +36,7 @@ typedef struct {
 } EMGL_font_t;
 */
 
-extern const EMGL_font_t font_arial12;
+extern const EMGL_font_t font_arial8;
 
 #ifdef __cplusplus
 }

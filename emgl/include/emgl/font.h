@@ -34,9 +34,9 @@ void emgl_drawTextU32(const EMGL_font_t *font, const U32 *str, emgl_coord_t x, e
 const EMGL_codePage_t *emgl_getCodePage(const EMGL_font_t *font, U32 code);
 const EMGL_glyph_t *emgl_getGlyph(const EMGL_font_t *font, U32 code);
 emgl_color_t emgl_getColorFromPixelValue(U8 value, U8 bpp, emgl_color_t color);
-void emgl_getDecompressedGlyphColoredBitmap(const U8 *in, U32 inSize, U8 inBpp, U32 numPixels, 
+void emgl_getDecompressedGlyphColoredBitmap(const U8 *in, U32 inSize, U8 inBpp, U16 width, U16 height,
 	emgl_color_t color, emgl_color_t *out);
-void emgl_getGlyphColoredBitmap(const U8 *in, U32 inSize, U8 inBpp, U32 numPixels,
+void emgl_getGlyphColoredBitmap(const U8 *in, U32 inSize, U8 inBpp, U16 width, U16 height,
 	emgl_color_t color, emgl_color_t *out);
 void emgl_drawGlyph(const EMGL_font_t *font, U32 glyph, emgl_coord_t *x, emgl_coord_t *y, emgl_color_t color);
 

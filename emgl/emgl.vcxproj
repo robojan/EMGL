@@ -74,6 +74,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\arial12.c" />
+    <ClCompile Include="src\arial8.c" />
     <ClCompile Include="src\emgl\font.c" />
     <ClCompile Include="src\emgl\math.c" />
     <ClCompile Include="src\emgl\emgl.c" />
@@ -95,6 +96,7 @@
     <ClInclude Include="include\emgl\math.h" />
     <ClInclude Include="include\emgl\types.h" />
     <ClInclude Include="src\arial12.h" />
+    <ClInclude Include="src\arial8.h" />
     <ClInclude Include="src\images.h" />
     <ClInclude Include="include\emgl\pcdriver.h" />
   </ItemGroup>

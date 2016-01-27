@@ -39,6 +39,9 @@
     <ClCompile Include="src\emgl\font.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\arial8.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\emgl\pcdriver.h">
@@ -81,6 +84,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\emgl\font.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\arial8.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
