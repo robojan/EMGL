@@ -2,6 +2,7 @@
 #include <emgl/pcdriver.h>
 
 #include "images.h"
+#include "arial12.h"
 
 int main(int argc, char **argv)
 {
@@ -77,6 +78,10 @@ int main(int argc, char **argv)
 	x[3] -= 50;
 	emgl_drawFilledPolygon(x, y, 4, COLOR_GREEN);
 
+	emgl_drawTextA(&font_arial12, "Hello world!!!", 220, 110, COLOR_BLACK);
+	emgl_drawTextA(&font_arial12, "Test 123", 220, 90, COLOR_GREEN);
+	emgl_drawTextA(&font_arial12, "HHHTTT :D", 220, 70, COLOR_PURPLE);
+
 	//emgl_drawFilledArcP(165, 50, 191, 65, 142, 30, COLOR_YELLOW);
 
 	//pcdrv_drawBitmap(drv->api, 0, 0, images_colors.width, images_colors.height, images_colors.data);
@@ -84,6 +89,7 @@ int main(int argc, char **argv)
 	//pcdrv_drawBitmap(api, 0, 0, images_blackjack.width, images_blackjack.height, images_blackjack.data);
 	//pcdrv_drawBitmap(api, 150, 0, images_luna.width, images_luna.height, images_luna.data);
 
+	
 
 	while (1)
 	{

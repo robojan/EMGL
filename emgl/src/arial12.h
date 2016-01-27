@@ -8,8 +8,9 @@ extern "C" {
 #include <stdint.h>
 
 // Choose between local declaration or remote declaration 
-//#include "font_data.h"
+#include <emgl/font.h>
 
+/*
 typedef struct {
 	int16_t advanceX;
 	int16_t advanceY;
@@ -34,7 +35,7 @@ typedef struct {
 	uint8_t numCodepages;
 	const EMGL_codePage_t * const codePagePtrs;
 } EMGL_font_t;
-
+*/
 
 extern const EMGL_font_t font_arial12;
 

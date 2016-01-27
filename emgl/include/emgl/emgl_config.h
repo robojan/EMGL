@@ -25,6 +25,22 @@
 //#define EMGL_NOASSERT
 
 /*
+ * Make use of stack for dynamic size buffers
+ * Note: MSVC dpes not support this
+ */
+//#define EMGL_USE_VLA
+
+/*
+ * Use alpha blending
+ */
+//#define EMGL_USE_ALPHA_BLENDING
+
+/*
+ * Use compressed fonts
+ */
+#define EMGL_COMPRESSED_FONTS
+
+/*
  * Enabled loglevel
  * Options are:
  * EMGL_LOGLVL_TODBG
@@ -47,5 +63,6 @@
  */
 #define EMGL_LOGMOD_DRIVER_ENABLE
 #define EMGL_LOGMOD_GRAPHICS_ENABLE
+#define EMGL_LOGMOD_FONT_ENABLE
 
 #endif

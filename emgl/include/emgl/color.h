@@ -4,6 +4,7 @@
 #include <emgl/emgl_config.h>
 #include <emgl/colormode.h>
 #include <emgl/types.h>
+
 /*
  * Define the color converter macros
  * and types
@@ -11,6 +12,7 @@
  * for RGB.
  */
 #if EMGL_INTERNALCOLORMODE == CM_1BPP
+#define EMGL_COLOR_BPP (1)
 typedef U8 emgl_color_t;
 
 #define emgl_colorConvFrom1BPP(x) (x)
@@ -38,6 +40,7 @@ typedef U8 emgl_color_t;
 #define emgl_colorConvToRGBA5551(x)   (((x) & 1) != 0 ? 0xFFFF : 0)
 #define emgl_colorConvToRGBA8888(x)   (((x) & 1) != 0 ? 0xFFFFFFFF : 0)
 #elif EMGL_INTERNALCOLORMODE == CM_8BPP
+#define EMGL_COLOR_BPP (8)
 typedef U8 emgl_color_t;
 
 #define emgl_colorModeGetPixel(data, n) ((data)[n])
@@ -73,6 +76,7 @@ typedef U8 emgl_color_t;
 		(((x)<<16)&0xFF0000)| 0xFF000000) 
 
 #elif EMGL_INTERNALCOLORMODE == CM_RGB332
+#define EMGL_COLOR_BPP (8)
 typedef U8 emgl_color_t;
 
 #define emgl_colorModeGetPixel(data, n) ((data)[n])
@@ -110,6 +114,7 @@ typedef U8 emgl_color_t;
 		| (((x)<<16)&0xE00000) | 0xFF000000) 
 
 #elif EMGL_INTERNALCOLORMODE == CM_RGB565
+#define EMGL_COLOR_BPP (16)
 typedef U16 emgl_color_t;
 
 #define emgl_colorModeGetPixel(data, n) ((data)[n])
@@ -148,6 +153,7 @@ typedef U16 emgl_color_t;
 		| (((x)<<8)&0xF80000) | 0xFF000000) 
 
 #elif EMGL_INTERNALCOLORMODE == CM_RGBA5551
+#define EMGL_COLOR_BPP (16)
 typedef U16 emgl_color_t;
 
 #define emgl_colorModeGetPixel(data, n) ((data)[n])
@@ -186,9 +192,11 @@ typedef U16 emgl_color_t;
 		| (((x)<<9)&0xF80000) | (((x)&0x8000)!= 0 ? 0xFF000000: 0)) 
 
 #elif EMGL_INTERNALCOLORMODE == CM_RGBA8888
+#define EMGL_COLOR_BPP (32)
 typedef U32 emgl_color_t;
 
 #define emgl_colorModeGetPixel(data, n) ((data)[n])
+#define emgl_colorModeSetPixel(data, n, value) do { (data)[n] = (value);} while(0)
 
 #define emgl_colorConvFrom1BPP(x) (((x) & 1) != 0 ? 0xFFFFFFFF : 0)
 #define emgl_colorConvFrom2BPP(x) ((((x) & 3)<<6) | (((x) & 3) << 14) | \

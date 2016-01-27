@@ -5,6 +5,7 @@
 #include <emgl/types.h>
 #include <emgl/color.h>
 #include <emgl/graphics.h>
+#include <emgl/font.h>
 
 typedef struct {
 	void *api;
