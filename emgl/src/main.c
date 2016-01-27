@@ -4,85 +4,95 @@
 #include "images.h"
 #include "arial12.h"
 #include "arial8.h"
+#include "segoescript10.h"
+#include "Sylfaen12.h"
 
 int main(int argc, char **argv)
 {
 	const emgl_driverAPI_t *drv = pcdrv_CreateDriver();
 	emgl_registerDriver(drv);
 	emgl_clear(COLOR_WHITE);
-	emgl_drawRectangle(20, 200, 20, 20, COLOR_BLACK);
-	emgl_drawRectangle(20, 180, 20, 20, COLOR_MAROON);
-	emgl_drawRectangle(20, 160, 20, 20, COLOR_GREEN);
-	emgl_drawRectangle(20, 140, 20, 20, COLOR_NAVY);
-	emgl_drawRectangle(40, 200, 20, 20, COLOR_SILVER);
-	emgl_drawRectangle(40, 180, 20, 20, COLOR_RED);
-	emgl_drawRectangle(40, 160, 20, 20, COLOR_LIME);
-	emgl_drawRectangle(40, 140, 20, 20, COLOR_BLUE);
-	emgl_drawRectangle(60, 200, 20, 20, COLOR_GRAY);
-	emgl_drawRectangle(60, 180, 20, 20, COLOR_PURPLE);
-	emgl_drawRectangle(60, 160, 20, 20, COLOR_OLIVE);
-	emgl_drawRectangle(60, 140, 20, 20, COLOR_TEAL);
-	emgl_drawRectangle(80, 200, 20, 20, COLOR_WHITE);
-	emgl_drawRectangle(80, 180, 20, 20, COLOR_FUCHSIA);
-	emgl_drawRectangle(80, 160, 20, 20, COLOR_YELLOW);
-	emgl_drawRectangle(80, 140, 20, 20, COLOR_AQUA);
+	emgl_drawRectangle(00, 230, 10, 10, COLOR_BLACK);
+	emgl_drawRectangle(00, 220, 10, 10, COLOR_MAROON);
+	emgl_drawRectangle(00, 210, 10, 10, COLOR_GREEN);
+	emgl_drawRectangle(00, 200, 10, 10, COLOR_NAVY);
+	emgl_drawRectangle(10, 230, 10, 10, COLOR_SILVER);
+	emgl_drawRectangle(10, 220, 10, 10, COLOR_RED);
+	emgl_drawRectangle(10, 210, 10, 10, COLOR_LIME);
+	emgl_drawRectangle(10, 200, 10, 10, COLOR_BLUE);
+	emgl_drawRectangle(20, 230, 10, 10, COLOR_GRAY);
+	emgl_drawRectangle(20, 220, 10, 10, COLOR_PURPLE);
+	emgl_drawRectangle(20, 210, 10, 10, COLOR_OLIVE);
+	emgl_drawRectangle(20, 200, 10, 10, COLOR_TEAL);
+	emgl_drawRectangle(30, 230, 10, 10, COLOR_WHITE);
+	emgl_drawRectangle(30, 220, 10, 10, COLOR_FUCHSIA);
+	emgl_drawRectangle(30, 210, 10, 10, COLOR_YELLOW);
+	emgl_drawRectangle(30, 200, 10, 10, COLOR_AQUA);
 
-	emgl_drawFilledRectangle(120, 200, 20, 20, COLOR_BLACK);
-	emgl_drawFilledRectangle(120, 180, 20, 20, COLOR_MAROON);
-	emgl_drawFilledRectangle(120, 160, 20, 20, COLOR_GREEN);
-	emgl_drawFilledRectangle(120, 140, 20, 20, COLOR_NAVY);
-	emgl_drawFilledRectangle(140, 200, 20, 20, COLOR_SILVER);
-	emgl_drawFilledRectangle(140, 180, 20, 20, COLOR_RED);
-	emgl_drawFilledRectangle(140, 160, 20, 20, COLOR_LIME);
-	emgl_drawFilledRectangle(140, 140, 20, 20, COLOR_BLUE);
-	emgl_drawFilledRectangle(160, 200, 20, 20, COLOR_GRAY);
-	emgl_drawFilledRectangle(160, 180, 20, 20, COLOR_PURPLE);
-	emgl_drawFilledRectangle(160, 160, 20, 20, COLOR_OLIVE);
-	emgl_drawFilledRectangle(160, 140, 20, 20, COLOR_TEAL);
-	emgl_drawFilledRectangle(180, 200, 20, 20, COLOR_WHITE);
-	emgl_drawFilledRectangle(180, 180, 20, 20, COLOR_FUCHSIA);
-	emgl_drawFilledRectangle(180, 160, 20, 20, COLOR_YELLOW);
-	emgl_drawFilledRectangle(180, 140, 20, 20, COLOR_AQUA);
+	emgl_drawFilledRectangle(50, 230, 10, 10, COLOR_BLACK);
+	emgl_drawFilledRectangle(50, 220, 10, 10, COLOR_MAROON);
+	emgl_drawFilledRectangle(50, 210, 10, 10, COLOR_GREEN);
+	emgl_drawFilledRectangle(50, 200, 10, 10, COLOR_NAVY);
+	emgl_drawFilledRectangle(60, 230, 10, 10, COLOR_SILVER);
+	emgl_drawFilledRectangle(60, 220, 10, 10, COLOR_RED);
+	emgl_drawFilledRectangle(60, 210, 10, 10, COLOR_LIME);
+	emgl_drawFilledRectangle(60, 200, 10, 10, COLOR_BLUE);
+	emgl_drawFilledRectangle(70, 230, 10, 10, COLOR_GRAY);
+	emgl_drawFilledRectangle(70, 220, 10, 10, COLOR_PURPLE);
+	emgl_drawFilledRectangle(70, 210, 10, 10, COLOR_OLIVE);
+	emgl_drawFilledRectangle(70, 200, 10, 10, COLOR_TEAL);
+	emgl_drawFilledRectangle(80, 230, 10, 10, COLOR_WHITE);
+	emgl_drawFilledRectangle(80, 220, 10, 10, COLOR_FUCHSIA);
+	emgl_drawFilledRectangle(80, 210, 10, 10, COLOR_YELLOW);
+	emgl_drawFilledRectangle(80, 200, 10, 10, COLOR_AQUA);
 
-	emgl_drawCircle(50, 50, 25, COLOR_OLIVE);
-	emgl_drawCircle(55, 50, 25, COLOR_TEAL);
-	emgl_drawCircle(60, 50, 25, COLOR_FUCHSIA);
-	emgl_drawCircle(65, 50, 25, COLOR_AQUA);
+	emgl_drawCircle(115, 220, 19, COLOR_OLIVE);
+	emgl_drawCircle(120, 220, 19, COLOR_TEAL);
+	emgl_drawCircle(125, 220, 19, COLOR_FUCHSIA);
+	emgl_drawCircle(130, 220, 19, COLOR_AQUA);
 
-	emgl_drawFilledCircle(50, 110, 25, COLOR_AQUA);
-	emgl_drawFilledCircle(55, 110, 25, COLOR_FUCHSIA);
-	emgl_drawFilledCircle(60, 110, 25, COLOR_TEAL);
-	emgl_drawFilledCircle(65, 110, 25, COLOR_OLIVE);
+	emgl_drawFilledCircle(175, 220, 19, COLOR_AQUA);
+	emgl_drawFilledCircle(180, 220, 19, COLOR_FUCHSIA);
+	emgl_drawFilledCircle(185, 220, 19, COLOR_TEAL);
+	emgl_drawFilledCircle(190, 220, 19, COLOR_OLIVE);
 
-	emgl_drawEllipse(150, 50, 50, 50, COLOR_OLIVE);
-	emgl_drawEllipse(155, 50, 60, 50, COLOR_TEAL);
-	emgl_drawEllipse(160, 50, 70, 50, COLOR_FUCHSIA);
-	emgl_drawEllipse(165, 50, 80, 50, COLOR_AQUA);
+	emgl_drawEllipse(230, 220, 33, 38, COLOR_OLIVE);
+	emgl_drawEllipse(232, 220, 38, 38, COLOR_TEAL);
+	emgl_drawEllipse(234, 220, 43, 38, COLOR_FUCHSIA);
+	emgl_drawEllipse(237, 220, 48, 38, COLOR_AQUA);
 
-	emgl_drawFilledEllipse(165, 110, 80, 50, COLOR_OLIVE);
-	emgl_drawFilledEllipse(160, 110, 70, 50, COLOR_TEAL);
-	emgl_drawFilledEllipse(155, 110, 60, 50, COLOR_FUCHSIA);
-	emgl_drawFilledEllipse(150, 110, 50, 50, COLOR_AQUA);
+	emgl_drawFilledEllipse(290, 220, 50, 38, COLOR_AQUA);
+	emgl_drawFilledEllipse(290, 220, 40, 38, COLOR_FUCHSIA);
+	emgl_drawFilledEllipse(290, 220, 30, 38, COLOR_TEAL);
+	emgl_drawFilledEllipse(290, 220, 20, 38, COLOR_OLIVE);
 
-	emgl_drawRoundedRectangle(220, 140, 30, 30, 5, COLOR_BLACK);
-	emgl_drawRoundedRectangle(220, 180, 30, 30, 5, COLOR_MAROON);
-	emgl_drawFilledRoundedRectangle(260, 140, 30, 30, 10, COLOR_GREEN);
-	emgl_drawFilledRoundedRectangle(260, 180, 30, 30, 10, COLOR_NAVY);	
+	emgl_drawRoundedRectangle(0, 170, 20, 20, 5, COLOR_BLACK);
+	emgl_drawRoundedRectangle(20, 170, 20, 20, 5, COLOR_MAROON);
+	emgl_drawFilledRoundedRectangle(40, 170, 20, 20, 7, COLOR_GREEN);
+	emgl_drawFilledRoundedRectangle(60, 170, 20, 20, 7, COLOR_NAVY);	
 
-	emgl_coord_t x [] = {280, 310, 315, 300};
-	emgl_coord_t y [] = {30, 40, 65, 70};
+	emgl_coord_t x [] = {80, 110, 115, 100};
+	emgl_coord_t y [] = {170, 180, 185, 190};
 
 	emgl_drawPolygon(x, y, 4, COLOR_GREEN);
-	x[0] -= 50;
-	x[1] -= 50;
-	x[2] -= 50;
-	x[3] -= 50;
+	x[0] += 30;
+	x[1] += 30;
+	x[2] += 30;
+	x[3] += 30;
+	emgl_drawFilledPolygon(x, y, 4, COLOR_GREEN);
+	x[0] += 40;
+	x[1] += 20;
+	x[2] += 30;
+	x[3] += 30;
+	y[2] -= 5;
+	y[1] += 5;
 	emgl_drawFilledPolygon(x, y, 4, COLOR_GREEN);
 
-	emgl_drawTextA(&font_arial12, "Hello world!!!", 220, 110, COLOR_BLACK);
-	emgl_drawTextA(&font_arial12, "Test 123", 220, 90, COLOR_GREEN);
-	emgl_drawTextA(&font_arial12, "HHHTTT :D", 220, 70, COLOR_PURPLE);
-	emgl_drawTextA(&font_arial12, "the quick brown fox jumped over the lazy dog. 1234567890", 0, 0, COLOR_RED);
+	emgl_drawTextA(&font_arial12, "Hello world!!!", 220, 170, COLOR_BLACK);
+	emgl_drawTextA(&font_arial8, "Test 123", 220, 160, COLOR_GREEN);
+	emgl_drawTextA(&font_segoescript10, "HHHTTT :D", 220, 145, COLOR_PURPLE);
+	emgl_drawTextA(&font_segoescript10, "the quick brown fox jumped over the lazy dog. 1234567890", 0, 130, COLOR_RED);
+	emgl_drawTextA(&font_Sylfaen12, "the quick brown fox jumped over the lazy dog. 1234567890", 0, 120, COLOR_RED);
 
 	//emgl_drawFilledArcP(165, 50, 191, 65, 142, 30, COLOR_YELLOW);
 

@@ -82,6 +82,8 @@
     <ClCompile Include="src\images.c" />
     <ClCompile Include="src\main.c" />
     <ClCompile Include="src\emgl\pcdriver.c" />
+    <ClCompile Include="src\segoescript10.c" />
+    <ClCompile Include="src\Sylfaen12.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\emgl\debug.h" />
@@ -99,6 +101,8 @@
     <ClInclude Include="src\arial8.h" />
     <ClInclude Include="src\images.h" />
     <ClInclude Include="include\emgl\pcdriver.h" />
+    <ClInclude Include="src\segoescript10.h" />
+    <ClInclude Include="src\Sylfaen12.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
