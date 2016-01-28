@@ -48,6 +48,9 @@
     <ClCompile Include="src\Sylfaen12.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\emgl\color.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\emgl\pcdriver.h">

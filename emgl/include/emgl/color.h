@@ -5,6 +5,7 @@
 #include <emgl/colormode.h>
 #include <emgl/types.h>
 
+
 /*
  * Define the color converter macros
  * and types
@@ -14,6 +15,7 @@
 #if EMGL_INTERNALCOLORMODE == CM_1BPP
 #define EMGL_COLOR_BPP (1)
 typedef U8 emgl_color_t;
+#define emgl_colorBlend emgl_colorBlend1BPP
 
 #define emgl_colorModeGetPixel(data, n) (((data)[(n)/8] >> ((n) & 7)) & 0x1)
 #define emgl_colorModeSetPixel(data, n, value) do { (data)[(n)/8] = ((data)[(n)/8] & ~(1 << ((n) & 7))) | (((value) & 1) << ((n) & 7));} while(0)
@@ -45,6 +47,7 @@ typedef U8 emgl_color_t;
 #elif EMGL_INTERNALCOLORMODE == CM_8BPP
 #define EMGL_COLOR_BPP (8)
 typedef U8 emgl_color_t;
+#define emgl_colorBlend emgl_colorBlend8BPP
 
 #define emgl_colorModeGetPixel(data, n) ((data)[n])
 #define emgl_colorModeSetPixel(data, n, value) do { (data)[n] = (value);} while(0)
@@ -82,6 +85,7 @@ typedef U8 emgl_color_t;
 #elif EMGL_INTERNALCOLORMODE == CM_RGB332
 #define EMGL_COLOR_BPP (8)
 typedef U8 emgl_color_t;
+#define emgl_colorBlend emgl_colorBlendRGB332
 
 #define emgl_colorModeGetPixel(data, n) ((data)[n])
 #define emgl_colorModeSetPixel(data, n, value) do { (data)[n] = (value);} while(0)
@@ -121,6 +125,7 @@ typedef U8 emgl_color_t;
 #elif EMGL_INTERNALCOLORMODE == CM_RGB565
 #define EMGL_COLOR_BPP (16)
 typedef U16 emgl_color_t;
+#define emgl_colorBlend emgl_colorBlendRGB565
 
 #define emgl_colorModeGetPixel(data, n) ((data)[n])
 #define emgl_colorModeSetPixel(data, n, value) do { (data)[n] = (value);} while(0)
@@ -161,6 +166,7 @@ typedef U16 emgl_color_t;
 #elif EMGL_INTERNALCOLORMODE == CM_RGBA5551
 #define EMGL_COLOR_BPP (16)
 typedef U16 emgl_color_t;
+#define emgl_colorBlend emgl_colorBlendRGBA5551
 
 #define emgl_colorModeGetPixel(data, n) ((data)[n])
 #define emgl_colorModeSetPixel(data, n, value) do { (data)[n] = (value);} while(0)
@@ -201,6 +207,7 @@ typedef U16 emgl_color_t;
 #elif EMGL_INTERNALCOLORMODE == CM_RGBA8888
 #define EMGL_COLOR_BPP (32)
 typedef U32 emgl_color_t;
+#define emgl_colorBlend emgl_colorBlendRGBA8888
 
 #define emgl_colorModeGetPixel(data, n) ((data)[n])
 #define emgl_colorModeSetPixel(data, n, value) do { (data)[n] = (value);} while(0)
@@ -241,6 +248,17 @@ typedef U32 emgl_color_t;
 #else
 #error Unknown internal color mode
 #endif
+
+/*
+* Color blending
+*/
+emgl_color_t emgl_colorBlend1BPP(emgl_color_t color1, emgl_color_t color2, U8 mix);
+emgl_color_t emgl_colorBlend8BPP(emgl_color_t color1, emgl_color_t color2, U8 mix);
+emgl_color_t emgl_colorBlendRGB332(emgl_color_t color1, emgl_color_t color2, U8 mix);
+emgl_color_t emgl_colorBlendRGB565(emgl_color_t color1, emgl_color_t color2, U8 mix);
+emgl_color_t emgl_colorBlendRGBA5551(emgl_color_t color1, emgl_color_t color2, U8 mix);
+emgl_color_t emgl_colorBlendRGBA8888(emgl_color_t color1, emgl_color_t color2, U8 mix);
+
 
 #define COLOR_BLACK           emgl_colorConvFromRGBA8888(0xFF000000)
 #define COLOR_SILVER          emgl_colorConvFromRGBA8888(0xFFC0C0C0)

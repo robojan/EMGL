@@ -75,6 +75,7 @@
   <ItemGroup>
     <ClCompile Include="src\arial12.c" />
     <ClCompile Include="src\arial8.c" />
+    <ClCompile Include="src\emgl\color.c" />
     <ClCompile Include="src\emgl\font.c" />
     <ClCompile Include="src\emgl\math.c" />
     <ClCompile Include="src\emgl\emgl.c" />

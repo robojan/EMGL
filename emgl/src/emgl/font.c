@@ -100,7 +100,6 @@ void emgl_drawGlyph(const EMGL_font_t *font, U32 code, emgl_coord_t *x, emgl_coo
 
 emgl_color_t emgl_getColorFromPixelValue(U8 value, U8 bpp, emgl_color_t color)
 {
-	U32 colorRGBA = emgl_colorConvToRGBA8888(color);
 	U8 strength;
 	switch (bpp) {
 	case 1:
@@ -119,18 +118,7 @@ emgl_color_t emgl_getColorFromPixelValue(U8 value, U8 bpp, emgl_color_t color)
 		EMGL_LOG(EMGL_LOGLVL_ERR | EMGL_LOGMOD_FONT, "Unknown bpp in font");
 		return COLOR_BLACK;
 	}
-#ifdef EMGL_USE_ALPHA_BLENDING
-	strength = (colorRGBA >> 24) * strength / 255; // TODO: optimize
-	return emgl_colorConvFromRGBA8888((colorRGBA & 0xFFFFFF) | (strength << 24));
-#else
-	U8 r = colorRGBA & 0xFF;
-	U8 g = (colorRGBA >> 8) & 0xFF;
-	U8 b = (colorRGBA >> 16) & 0xFF;
-	r = (r*strength + 0xFF * (0xFF - strength)) / 255;
-	g = (g*strength + 0xFF * (0xFF - strength)) / 255;
-	b = (b*strength + 0xFF * (0xFF - strength)) / 255;
-	return emgl_colorConvFromRGBA8888(0xFF000000 | r | (g << 8) | (b << 16)); // TODO not working yet
-#endif
+	return emgl_colorBlend(color, emgl_colorConvFromRGBA8888(0xFFFFFF), strength);
 }
 
 void emgl_getGlyphColoredBitmap(const U8 *in, U32 inSize, U8 inBpp, U16 width, U16 height, emgl_color_t color, emgl_color_t *out)
