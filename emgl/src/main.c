@@ -88,11 +88,11 @@ int main(int argc, char **argv)
 	y[1] += 5;
 	emgl_drawFilledPolygon(x, y, 4, COLOR_GREEN);
 
-	emgl_drawTextA(&font_arial12, "Hello world!!!", 220, 170, COLOR_BLACK);
-	emgl_drawTextA(&font_arial8, "Test 123", 220, 160, COLOR_GREEN);
-	emgl_drawTextA(&font_segoescript10, "HHHTTT :D", 220, 145, COLOR_PURPLE);
-	emgl_drawTextA(&font_segoescript10, "the quick brown fox jumped over the lazy dog. 1234567890", 0, 130, COLOR_RED);
-	emgl_drawTextA(&font_Sylfaen12, "the quick brown fox jumped over the lazy dog. 1234567890", 0, 120, COLOR_NAVY);
+	emgl_drawTextA(&font_arial12, "Hello world!!!", 220, 170, COLOR_BLACK, COLOR_WHITE);
+	emgl_drawTextA(&font_arial8, "Test 123", 220, 160, COLOR_GREEN, COLOR_WHITE);
+	emgl_drawTextA(&font_segoescript10, "HHHTTT :D", 220, 145, COLOR_PURPLE, COLOR_WHITE);
+	emgl_drawTextA(&font_segoescript10, "the quick brown fox jumped over the lazy dog. 1234567890", 0, 130, COLOR_RED, COLOR_WHITE);
+	emgl_drawTextA(&font_Sylfaen12, "the quick brown fox jumped over the lazy dog. 1234567890", 0, 120, COLOR_NAVY, COLOR_WHITE);
 
 	//emgl_drawFilledArcP(165, 50, 191, 65, 142, 30, COLOR_YELLOW);
 

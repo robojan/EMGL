@@ -10,7 +10,8 @@
 
 #define DRIVER g_emgl_activeDriver
 
-void emgl_drawTextA(const EMGL_font_t *font, const char *str, emgl_coord_t x, emgl_coord_t y, emgl_color_t color)
+void emgl_drawTextA(const EMGL_font_t *font, const char *str, emgl_coord_t x, emgl_coord_t y, 
+	emgl_color_t foregroundColor, emgl_color_t backgroundColor)
 {
 	EMGL_ASSERT("font != NULL", font != NULL);
 	// Move to origin
@@ -18,12 +19,13 @@ void emgl_drawTextA(const EMGL_font_t *font, const char *str, emgl_coord_t x, em
 
 	// Draw draw each glyph
 	while (*str != '\0') {
-		emgl_drawGlyph(font, *str, &x, &y, color);
+		emgl_drawGlyph(font, *str, &x, &y, foregroundColor, backgroundColor);
 		str++;
 	}
 }
 
-void emgl_drawTextU32(const EMGL_font_t *font, const U32 *str, emgl_coord_t x, emgl_coord_t y, emgl_color_t color)
+void emgl_drawTextU32(const EMGL_font_t *font, const U32 *str, emgl_coord_t x, emgl_coord_t y, 
+	emgl_color_t foregroundColor, emgl_color_t backgroundColor)
 {
 	EMGL_ASSERT("font != NULL", font != NULL);
 	// Move to origin
@@ -31,7 +33,7 @@ void emgl_drawTextU32(const EMGL_font_t *font, const U32 *str, emgl_coord_t x, e
 
 	// Draw draw each glyph
 	while (*str != 0) {
-		emgl_drawGlyph(font, *str, &x, &y, color);
+		emgl_drawGlyph(font, *str, &x, &y, foregroundColor, backgroundColor);
 		str++;
 	}
 }
@@ -55,7 +57,8 @@ const EMGL_glyph_t *emgl_getGlyph(const EMGL_font_t *font, U32 code)
 	return page->glyphPtrs[code - page->startCode];
 }
 
-void emgl_drawGlyph(const EMGL_font_t *font, U32 code, emgl_coord_t *x, emgl_coord_t *y, emgl_color_t color)
+void emgl_drawGlyph(const EMGL_font_t *font, U32 code, emgl_coord_t *x, emgl_coord_t *y, 
+	emgl_color_t foregroundColor, emgl_color_t backgroundColor)
 {
 	EMGL_ASSERT("font != NULL", font != NULL);
 	EMGL_ASSERT("x != NULL", x != NULL);
@@ -80,11 +83,11 @@ void emgl_drawGlyph(const EMGL_font_t *font, U32 code, emgl_coord_t *x, emgl_coo
 			EMGL_ASSERT("Compressed font found when EMGL_COMPRESSED_FONTS == 0", 0);
 #endif
 			emgl_getDecompressedGlyphColoredBitmap(glyph->bitmapData, glyph->bitmapSize & ~(1 << 31),
-				font->bpp, glyph->bitmapWidth, glyph->bitmapHeight, color, bitmap);
+				font->bpp, glyph->bitmapWidth, glyph->bitmapHeight, foregroundColor, backgroundColor, bitmap);
 		}
 		else {
 			emgl_getGlyphColoredBitmap(glyph->bitmapData, glyph->bitmapSize, font->bpp,
-				glyph->bitmapWidth, glyph->bitmapHeight, color, bitmap);
+				glyph->bitmapWidth, glyph->bitmapHeight, foregroundColor, backgroundColor, bitmap);
 		}
 		// draw the bitmap
 		DRIVER->drawBitmap(DRIVER->api, *x + glyph->bearingX, *y - glyph->bitmapHeight + glyph->bearingY,
@@ -98,7 +101,7 @@ void emgl_drawGlyph(const EMGL_font_t *font, U32 code, emgl_coord_t *x, emgl_coo
 	*y = *y - glyph->advanceY;
 }
 
-emgl_color_t emgl_getColorFromPixelValue(U8 value, U8 bpp, emgl_color_t color)
+emgl_color_t emgl_getColorFromPixelValue(U8 value, U8 bpp, emgl_color_t foregroundColor, emgl_color_t backgroundColor)
 {
 	U8 strength;
 	switch (bpp) {
@@ -118,10 +121,11 @@ emgl_color_t emgl_getColorFromPixelValue(U8 value, U8 bpp, emgl_color_t color)
 		EMGL_LOG(EMGL_LOGLVL_ERR | EMGL_LOGMOD_FONT, "Unknown bpp in font");
 		return COLOR_BLACK;
 	}
-	return emgl_colorBlend(color, emgl_colorConvFromRGBA8888(0xFFFFFF), strength);
+	return emgl_colorBlend(foregroundColor, backgroundColor, strength);
 }
 
-void emgl_getGlyphColoredBitmap(const U8 *in, U32 inSize, U8 inBpp, U16 width, U16 height, emgl_color_t color, emgl_color_t *out)
+void emgl_getGlyphColoredBitmap(const U8 *in, U32 inSize, U8 inBpp, U16 width, U16 height, 
+	emgl_color_t foregroundColor, emgl_color_t backgroundColor, emgl_color_t *out)
 {
 	EMGL_ASSERT("in != NULL", in != NULL);
 	EMGL_ASSERT("out != NULL", in != NULL);
@@ -132,14 +136,15 @@ void emgl_getGlyphColoredBitmap(const U8 *in, U32 inSize, U8 inBpp, U16 width, U
 			U32 idx = bitPos / 8;
 			U8 bit = bitPos & 7;
 			U8 value = (in[idx] >> bit) & mask;
-			emgl_color_t valueColor = emgl_getColorFromPixelValue(value, inBpp, color);
+			emgl_color_t valueColor = emgl_getColorFromPixelValue(value, inBpp, foregroundColor, backgroundColor);
 			emgl_colorModeSetPixel(out, (height - y - 1) * width + x, valueColor);
 			bitPos += inBpp;
 		}
 	}
 }
 
-void emgl_getDecompressedGlyphColoredBitmap(const U8 *in, U32 inSize, U8 inBpp, U16 width, U16 height, emgl_color_t color, emgl_color_t *out)
+void emgl_getDecompressedGlyphColoredBitmap(const U8 *in, U32 inSize, U8 inBpp, U16 width, U16 height, 
+	emgl_color_t foregroundColor, emgl_color_t backgroundColor, emgl_color_t *out)
 {
 	EMGL_ASSERT("in != NULL", in != NULL);
 	EMGL_ASSERT("out != NULL", in != NULL);
@@ -167,7 +172,7 @@ void emgl_getDecompressedGlyphColoredBitmap(const U8 *in, U32 inSize, U8 inBpp, 
 		}
 		U8 repeat = (element & 0xF) + 1;
 		U8 value = (element >> 4) & mask;
-		emgl_color_t valueColor = emgl_getColorFromPixelValue(value, inBpp, color);
+		emgl_color_t valueColor = emgl_getColorFromPixelValue(value, inBpp, foregroundColor, backgroundColor);
 		for (U8 j = 0; y < height && j < repeat; ++j) {
 			emgl_colorModeSetPixel(out, (height - y - 1) * width + x, valueColor);
 			x++;
