@@ -7,8 +7,8 @@
 typedef struct {
 	int16_t advanceX;
 	int16_t advanceY;
-	int16_t bitmapLeft;
-	int16_t bitmapTop;
+	int16_t bearingX;
+	int16_t bearingY;
 	uint16_t bitmapWidth;
 	uint16_t bitmapHeight;
 	uint32_t bitmapSize;

@@ -15,6 +15,9 @@
 #define EMGL_COLOR_BPP (1)
 typedef U8 emgl_color_t;
 
+#define emgl_colorModeGetPixel(data, n) (((data)[(n)/8] >> ((n) & 7)) & 0x1)
+#define emgl_colorModeSetPixel(data, n, value) do { (data)[(n)/8] = ((data)[(n)/8] & ~(1 << ((n) & 7))) | (((value) & 1) << ((n) & 7));} while(0)
+
 #define emgl_colorConvFrom1BPP(x) (x)
 #define emgl_colorConvFrom2BPP(x) ((x)>>1)
 #define emgl_colorConvFrom8BPP(x) ((x)>>7)
@@ -44,6 +47,7 @@ typedef U8 emgl_color_t;
 typedef U8 emgl_color_t;
 
 #define emgl_colorModeGetPixel(data, n) ((data)[n])
+#define emgl_colorModeSetPixel(data, n, value) do { (data)[n] = (value);} while(0)
 
 #define emgl_colorConvFrom1BPP(x) ((x)<<7)
 #define emgl_colorConvFrom2BPP(x) ((x)<<6)
@@ -80,6 +84,7 @@ typedef U8 emgl_color_t;
 typedef U8 emgl_color_t;
 
 #define emgl_colorModeGetPixel(data, n) ((data)[n])
+#define emgl_colorModeSetPixel(data, n, value) do { (data)[n] = (value);} while(0)
 
 #define emgl_colorConvFrom1BPP(x) (((x) & 1) != 0 ? 0xFF : 0)
 #define emgl_colorConvFrom2BPP(x) (((x) & 3) | (((x) & 3) << 3) | \
@@ -118,6 +123,7 @@ typedef U8 emgl_color_t;
 typedef U16 emgl_color_t;
 
 #define emgl_colorModeGetPixel(data, n) ((data)[n])
+#define emgl_colorModeSetPixel(data, n, value) do { (data)[n] = (value);} while(0)
 
 #define emgl_colorConvFrom1BPP(x) (((x) & 1) != 0 ? 0xFFFF : 0)
 #define emgl_colorConvFrom2BPP(x) ((((x) & 3)<<3) | (((x) & 3) << 9) | \
@@ -157,6 +163,7 @@ typedef U16 emgl_color_t;
 typedef U16 emgl_color_t;
 
 #define emgl_colorModeGetPixel(data, n) ((data)[n])
+#define emgl_colorModeSetPixel(data, n, value) do { (data)[n] = (value);} while(0)
 
 #define emgl_colorConvFrom1BPP(x) (((x) & 1) != 0 ? 0xFFFF : 0)
 #define emgl_colorConvFrom2BPP(x) ((((x) & 3)<<3) | (((x) & 3) << 8) | \

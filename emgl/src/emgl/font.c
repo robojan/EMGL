@@ -87,7 +87,7 @@ void emgl_drawGlyph(const EMGL_font_t *font, U32 code, emgl_coord_t *x, emgl_coo
 				glyph->bitmapWidth, glyph->bitmapHeight, color, bitmap);
 		}
 		// draw the bitmap
-		DRIVER->drawBitmap(DRIVER->api, *x + glyph->bitmapLeft, *y - glyph->bitmapTop,
+		DRIVER->drawBitmap(DRIVER->api, *x + glyph->bearingX, *y - glyph->bitmapHeight + glyph->bearingY,
 			glyph->bitmapWidth, glyph->bitmapHeight, bitmap);
 
 #ifndef EMGL_USE_VLA
@@ -95,7 +95,7 @@ void emgl_drawGlyph(const EMGL_font_t *font, U32 code, emgl_coord_t *x, emgl_coo
 #endif
 	}
 	*x = *x + glyph->advanceX;
-	*y = *y + glyph->advanceY;
+	*y = *y - glyph->advanceY;
 }
 
 emgl_color_t emgl_getColorFromPixelValue(U8 value, U8 bpp, emgl_color_t color)

@@ -92,7 +92,7 @@ int main(int argc, char **argv)
 	emgl_drawTextA(&font_arial8, "Test 123", 220, 160, COLOR_GREEN);
 	emgl_drawTextA(&font_segoescript10, "HHHTTT :D", 220, 145, COLOR_PURPLE);
 	emgl_drawTextA(&font_segoescript10, "the quick brown fox jumped over the lazy dog. 1234567890", 0, 130, COLOR_RED);
-	emgl_drawTextA(&font_Sylfaen12, "the quick brown fox jumped over the lazy dog. 1234567890", 0, 120, COLOR_RED);
+	emgl_drawTextA(&font_Sylfaen12, "the quick brown fox jumped over the lazy dog. 1234567890", 0, 120, COLOR_NAVY);
 
 	//emgl_drawFilledArcP(165, 50, 191, 65, 142, 30, COLOR_YELLOW);
 

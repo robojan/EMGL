@@ -226,6 +226,11 @@ wxPoint Font::GetGlyphBitmapTL(wxUint32 glyph)
 	{
 		return wxPoint(0, 0);
 	}
+	error = FT_Render_Glyph(m_face->glyph, FT_RENDER_MODE_NORMAL);
+	if (error != FT_Err_Ok)
+	{
+		return wxPoint(0, 0);
+	}
 	return wxPoint(m_face->glyph->bitmap_left , m_face->glyph->bitmap_top);
 }
 

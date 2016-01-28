@@ -111,8 +111,6 @@ CSourceDataGenerator::EMGL_font_t * CSourceDataGenerator::LoadEMGLFont(const Cha
 				outCodepage->glyphPtrs[j] = NULL;
 				continue;
 			}
-			wxPoint advance = m_loadedFont.GetGlyphAdvance(glyph);
-			wxPoint bitmapTL = m_loadedFont.GetGlyphBitmapTL(glyph);
 			int bitmapWidth, bitmapHeight;
 			int bitmapSize = m_loadedFont.GetGlyphBitmap(glyph, NULL, &bitmapWidth, &bitmapHeight);
 			if (bitmapSize < 0) {
@@ -132,12 +130,14 @@ CSourceDataGenerator::EMGL_font_t * CSourceDataGenerator::LoadEMGLFont(const Cha
 
 			ascender += m_loadedFont.GetAscender();
 			ascenderDiv++;
+			wxPoint advance = m_loadedFont.GetGlyphAdvance(glyph);
+			wxPoint bearing = m_loadedFont.GetGlyphBearing(glyph);
 
 			outCodepage->glyphPtrs[j] = new EMGL_glyph_t;
 			outCodepage->glyphPtrs[j]->advanceX = advance.x;
 			outCodepage->glyphPtrs[j]->advanceY = advance.y;
-			outCodepage->glyphPtrs[j]->bitmapLeft = bitmapTL.x;
-			outCodepage->glyphPtrs[j]->bitmapTop = bitmapTL.y;
+			outCodepage->glyphPtrs[j]->bearingX = bearing.x;
+			outCodepage->glyphPtrs[j]->bearingY = bearing.y;
 			outCodepage->glyphPtrs[j]->bitmapWidth = bitmapWidth;
 			outCodepage->glyphPtrs[j]->bitmapHeight = bitmapHeight;
 			outCodepage->glyphPtrs[j]->bitmapSize = bitmapSize;
@@ -205,8 +205,8 @@ wxString CSourceDataGenerator::GetStructureDeclaration()
 		"typedef struct {\n"
 		"\tint16_t advanceX;\n"
 		"\tint16_t advanceY;\n"
-		"\tint16_t bitmapLeft;\n"
-		"\tint16_t bitmapTop;\n"
+		"\tint16_t bearingX;\n"
+		"\tint16_t bearingY;\n"
 		"\tuint16_t bitmapWidth;\n"
 		"\tuint16_t bitmapHeight;\n"
 		"\tuint32_t bitmapSize;\n"
@@ -287,7 +287,7 @@ wxString CSourceDataGenerator::GetGlyphDefinitions(const EMGL_font_t *font)
 			if (ptr == NULL) continue;
 			int dataSize = ptr->bitmapSize& ~(1 << 31);
 			result += wxString::Format("const static EMGL_glyph_t glyph_%d_%d = {%d, %d, %d, %d, %u, %u, %u, ", 
-				codepage, glyph, ptr->advanceX, ptr->advanceY, ptr->bitmapLeft, ptr->bitmapTop, ptr->bitmapWidth, ptr->bitmapHeight, 
+				codepage, glyph, ptr->advanceX, ptr->advanceY, ptr->bearingX, ptr->bearingY, ptr->bitmapWidth, ptr->bitmapHeight, 
 				ptr->bitmapSize);
 			if (dataSize == 0) {
 				result += "(void *)0 };\n";
