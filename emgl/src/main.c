@@ -80,12 +80,14 @@ int main(int argc, char **argv)
 	x[2] += 30;
 	x[3] += 30;
 	emgl_drawFilledPolygon(x, y, 4, COLOR_GREEN);
-	x[0] += 40;
-	x[1] += 20;
-	x[2] += 30;
-	x[3] += 30;
-	y[2] -= 5;
-	y[1] += 5;
+	x[0] = 150;
+	x[1] = 175;
+	x[2] = 200;
+	x[3] = 175;
+	y[0] = 170;
+	y[1] = 190;
+	y[2] = 170;
+	y[3] = 180;
 	emgl_drawFilledPolygon(x, y, 4, COLOR_GREEN);
 
 	emgl_drawTextA(&font_arial12, "Hello world!!!", 220, 170, COLOR_BLACK, COLOR_WHITE);

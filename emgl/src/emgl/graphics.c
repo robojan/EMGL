@@ -1,6 +1,7 @@
 #include <emgl/graphics.h>
 #include <emgl/debug.h>
 #include <emgl/driver.h>
+#include <emgl/math.h>
 
 #define DRIVER g_emgl_activeDriver
 
@@ -444,6 +445,63 @@ void emgl_drawPolygon(emgl_coord_t *x, emgl_coord_t *y, U8 count, emgl_color_t c
 void emgl_drawFilledPolygon(emgl_coord_t *x, emgl_coord_t *y, U8 count, emgl_color_t color)
 {
 	EMGL_ASSERT("g_emgl_activeDriver != NULL", g_emgl_activeDriver != NULL);
+	if (count == 0)
+		return;
+	// Find min and max
+	emgl_coord_t ymin, ymax;
+	ymin = ymax = y[0];
+	for (U8 i = 1; i < count; ++i) {
+		if (y[i] < ymin) ymin = y[i];
+		if (y[i] > ymax) ymax = y[i];
+	}
+#ifdef EMGL_USE_VLA
+	emgl_coord_t intersections[count];
+#else 
+	emgl_coord_t *intersections = (emgl_coord_t *)emgl_malloc(count * sizeof(emgl_coord_t));
+#endif
+
+	for (emgl_coord_t yi = ymin; yi <= ymax; ++yi) {
+		// Find all intersections
+		U8 numIntersections = 0;
+		for (U8 i = 0; i < count; ++i) {
+			emgl_coord_t ex1 = x[i];
+			emgl_coord_t ey1 = y[i];
+			emgl_coord_t ex2 = x[i == count - 1 ? 0 : i + 1];
+			emgl_coord_t ey2 = y[i == count - 1 ? 0 : i + 1];
+			emgl_coord_t maxey = ey1 > ey2 ? ey1 : ey2;
+			if ((ey1 < yi && ey2 < yi) || (ey1 > yi && ey2 > yi) || yi == maxey) {
+				// Can skip
+				continue;
+			}
+			if (emgl_lineSectionIntersection(ex1, yi, ex2, yi, ex1, ey1, ex2, ey2,
+				&intersections[numIntersections], NULL)) {
+				numIntersections++;
+			}
+		}
+		// Sort the intersections with bubble sort
+		U8 n = numIntersections;
+		do {
+			U8 newn = 0;
+			for (U8 i = 1; i < n; ++i) {
+				if (intersections[i - 1] > intersections[i]) {
+					emgl_coord_t temp = intersections[i - 1];
+					intersections[i - 1] = intersections[i];
+					intersections[i] = temp;
+					newn = i;
+				}
+			}
+			n = newn;
+		} while (n > 0);
+		// start drawing line segments
+		EMGL_ASSERT("emgl_drawFilledPolygon: number of intersections must be even", (numIntersections & 1) == 0);
+		for (U8 i = 0; i < numIntersections; i += 2) {
+			DRIVER->drawLineH(DRIVER->api, intersections[i], intersections[i + 1], yi, color);
+		}
+	}
+
+#ifndef EMGL_USE_VLA
+	emgl_free(intersections);
+#endif
 
 	EMGL_LOG(EMGL_LOGLVL_WARN, "emgl_drawFilledPolygon not implemented");
 }
