@@ -31,17 +31,17 @@ typedef struct {
 
 void emgl_drawTextA(const EMGL_font_t *font, const char *str, emgl_coord_t x, emgl_coord_t y, 
 	emgl_color_t foregroundColor, emgl_color_t backgroundColor);
-void emgl_drawTextU32(const EMGL_font_t *font, const U32 *str, emgl_coord_t x, emgl_coord_t y, 
+void emgl_drawTextU32(const EMGL_font_t *font, const emgl_U32 *str, emgl_coord_t x, emgl_coord_t y, 
 	emgl_color_t foregroundColor, emgl_color_t backgroundColor);
-const EMGL_codePage_t *emgl_getCodePage(const EMGL_font_t *font, U32 code);
-const EMGL_glyph_t *emgl_getGlyph(const EMGL_font_t *font, U32 code);
-emgl_color_t emgl_getColorFromPixelValue(U8 value, U8 bpp, emgl_color_t foregroundColor, 
+const EMGL_codePage_t *emgl_getCodePage(const EMGL_font_t *font, emgl_U32 code);
+const EMGL_glyph_t *emgl_getGlyph(const EMGL_font_t *font, emgl_U32 code);
+emgl_color_t emgl_getColorFromPixelValue(emgl_U8 value, emgl_U8 bpp, emgl_color_t foregroundColor, 
 	emgl_color_t backgroundColor);
-void emgl_getDecompressedGlyphColoredBitmap(const U8 *in, U32 inSize, U8 inBpp, U16 width, U16 height,
+void emgl_getDecompressedGlyphColoredBitmap(const emgl_U8 *in, emgl_U32 inSize, emgl_U8 inBpp, emgl_U16 width, emgl_U16 height,
 	emgl_color_t foregroundColor, emgl_color_t backgroundColor, emgl_color_t *out);
-void emgl_getGlyphColoredBitmap(const U8 *in, U32 inSize, U8 inBpp, U16 width, U16 height,
+void emgl_getGlyphColoredBitmap(const emgl_U8 *in, emgl_U32 inSize, emgl_U8 inBpp, emgl_U16 width, emgl_U16 height,
 	emgl_color_t foregroundColor, emgl_color_t backgroundColor, emgl_color_t *out);
-void emgl_drawGlyph(const EMGL_font_t *font, U32 glyph, emgl_coord_t *x, emgl_coord_t *y, 
+void emgl_drawGlyph(const EMGL_font_t *font, emgl_U32 glyph, emgl_coord_t *x, emgl_coord_t *y, 
 	emgl_color_t foregroundColor, emgl_color_t backgroundColor);
 
 #endif

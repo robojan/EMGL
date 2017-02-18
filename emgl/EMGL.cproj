@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
+  <PropertyGroup>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>7.0</ProjectVersion>
+    <ToolchainName>com.Atmel.AVRGCC32.C</ToolchainName>
+    <ProjectGuid>{06e63c42-914f-4010-b933-e67c42535710}</ProjectGuid>
+    <avrdevice>AT32UC3B0256</avrdevice>
+    <avrdeviceseries>none</avrdeviceseries>
+    <OutputType>StaticLibrary</OutputType>
+    <Language>C</Language>
+    <OutputFileName>lib$(MSBuildProjectName)</OutputFileName>
+    <OutputFileExtension>.a</OutputFileExtension>
+    <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
+    <AvrGccProjectExtensions>
+    </AvrGccProjectExtensions>
+    <AssemblyName>EMGL</AssemblyName>
+    <Name>EMGL</Name>
+    <RootNamespace>EMGL</RootNamespace>
+    <ToolchainFlavour>Native</ToolchainFlavour>
+    <KeepTimersRunning>true</KeepTimersRunning>
+    <OverrideVtor>false</OverrideVtor>
+    <CacheFlash>true</CacheFlash>
+    <ProgFlashFromRam>true</ProgFlashFromRam>
+    <RamSnippetAddress>0x20000000</RamSnippetAddress>
+    <UncachedRange />
+    <preserveEEPROM>true</preserveEEPROM>
+    <OverrideVtorValue>exception_table</OverrideVtorValue>
+    <BootSegment>2</BootSegment>
+    <eraseonlaunchrule>0</eraseonlaunchrule>
+    <AsfFrameworkConfig>
+      <framework-data xmlns="">
+  <options />
+  <configurations />
+  <files />
+  <documentation help="" />
+  <offline-documentation help="" />
+  <dependencies>
+    <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.31.0" />
+  </dependencies>
+</framework-data>
+    </AsfFrameworkConfig>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <ToolchainSettings>
+    </ToolchainSettings>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <ToolchainSettings>
+      <Avr32Gcc>
+  <avr32gcc.common.outputfiles.hex>True</avr32gcc.common.outputfiles.hex>
+  <avr32gcc.common.outputfiles.lss>True</avr32gcc.common.outputfiles.lss>
+  <avr32gcc.common.outputfiles.eep>True</avr32gcc.common.outputfiles.eep>
+  <avr32gcc.common.outputfiles.srec>True</avr32gcc.common.outputfiles.srec>
+  <avr32gcc.compiler.directories.IncludePaths>
+    <ListValues>
+      <Value>../include</Value>
+    </ListValues>
+  </avr32gcc.compiler.directories.IncludePaths>
+</Avr32Gcc>
+    </ToolchainSettings>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="include\" />
+    <Folder Include="include\emgl\" />
+    <Folder Include="src\" />
+    <Folder Include="src\emgl\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="include\emgl\color.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\emgl\colormode.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\emgl\debug.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\emgl\driver.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\emgl\emgl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\emgl\emgl_config.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\emgl\font.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\emgl\graphics.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\emgl\impl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\emgl\math.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\emgl\pcdriver.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\emgl\types.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\emgl\color.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\emgl\emgl.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\emgl\font.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\emgl\graphics.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\emgl\math.c">
+      <SubType>compile</SubType>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
+</Project>

@@ -64,4 +64,9 @@
 #define EMGL_LOGMOD_GRAPHICS_ENABLE
 #define EMGL_LOGMOD_FONT_ENABLE
 
+/* 
+ * Use standard c library memory allocation functions and printf functions
+ */
+//#define EMGL_USE_STANDARD_IMPL 
+
 #endif

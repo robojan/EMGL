@@ -431,18 +431,18 @@ void emgl_drawFilledRoundedRectangle(emgl_coord_t x, emgl_coord_t y, emgl_coord_
 	}
 }
 
-void emgl_drawPolygon(emgl_coord_t *x, emgl_coord_t *y, emgl_U8 count, emgl_color_t color)
+void emgl_drawPolygon(emgl_coord_t *x, emgl_coord_t *y, U8 count, emgl_color_t color)
 {
 	EMGL_ASSERT("g_emgl_activeDriver != NULL", g_emgl_activeDriver != NULL);
 
-	for (emgl_U8 n = 0; n < count-1; n++)
+	for (U8 n = 0; n < count-1; n++)
 	{
 		emgl_drawLine(x[n], y[n], x[n+1], y[n+1], color);
 	}
 	emgl_drawLine(x[count-1], y[count-1], x[0], y[0],color);
 }
 
-void emgl_drawFilledPolygon(emgl_coord_t *x, emgl_coord_t *y, emgl_U8 count, emgl_color_t color)
+void emgl_drawFilledPolygon(emgl_coord_t *x, emgl_coord_t *y, U8 count, emgl_color_t color)
 {
 	EMGL_ASSERT("g_emgl_activeDriver != NULL", g_emgl_activeDriver != NULL);
 	if (count == 0)
@@ -450,7 +450,7 @@ void emgl_drawFilledPolygon(emgl_coord_t *x, emgl_coord_t *y, emgl_U8 count, emg
 	// Find min and max
 	emgl_coord_t ymin, ymax;
 	ymin = ymax = y[0];
-	for (emgl_U8 i = 1; i < count; ++i) {
+	for (U8 i = 1; i < count; ++i) {
 		if (y[i] < ymin) ymin = y[i];
 		if (y[i] > ymax) ymax = y[i];
 	}
@@ -462,8 +462,8 @@ void emgl_drawFilledPolygon(emgl_coord_t *x, emgl_coord_t *y, emgl_U8 count, emg
 
 	for (emgl_coord_t yi = ymin; yi <= ymax; ++yi) {
 		// Find all intersections
-		emgl_U8 numIntersections = 0;
-		for (emgl_U8 i = 0; i < count; ++i) {
+		U8 numIntersections = 0;
+		for (U8 i = 0; i < count; ++i) {
 			emgl_coord_t ex1 = x[i];
 			emgl_coord_t ey1 = y[i];
 			emgl_coord_t ex2 = x[i == count - 1 ? 0 : i + 1];
@@ -479,10 +479,10 @@ void emgl_drawFilledPolygon(emgl_coord_t *x, emgl_coord_t *y, emgl_U8 count, emg
 			}
 		}
 		// Sort the intersections with bubble sort
-		emgl_U8 n = numIntersections;
+		U8 n = numIntersections;
 		do {
-			emgl_U8 newn = 0;
-			for (emgl_U8 i = 1; i < n; ++i) {
+			U8 newn = 0;
+			for (U8 i = 1; i < n; ++i) {
 				if (intersections[i - 1] > intersections[i]) {
 					emgl_coord_t temp = intersections[i - 1];
 					intersections[i - 1] = intersections[i];
@@ -494,7 +494,7 @@ void emgl_drawFilledPolygon(emgl_coord_t *x, emgl_coord_t *y, emgl_U8 count, emg
 		} while (n > 0);
 		// start drawing line segments
 		EMGL_ASSERT("emgl_drawFilledPolygon: number of intersections must be even", (numIntersections & 1) == 0);
-		for (emgl_U8 i = 0; i < numIntersections; i += 2) {
+		for (U8 i = 0; i < numIntersections; i += 2) {
 			DRIVER->drawLineH(DRIVER->api, intersections[i], intersections[i + 1], yi, color);
 		}
 	}
@@ -562,7 +562,7 @@ void emgl_drawLine(emgl_coord_t x1, emgl_coord_t y1, emgl_coord_t x2, emgl_coord
 	}
 }
 
-void emgl_drawBezier(emgl_coord_t *x, emgl_coord_t *y, emgl_U8 count, emgl_color_t color)
+void emgl_drawBezier(emgl_coord_t *x, emgl_coord_t *y, U8 count, emgl_color_t color)
 {
 	EMGL_ASSERT("g_emgl_activeDriver != NULL", g_emgl_activeDriver != NULL);
 

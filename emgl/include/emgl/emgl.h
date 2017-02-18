@@ -8,6 +8,14 @@
 #include <emgl/font.h>
 
 typedef struct {
+	void *(*malloc)(emgl_U32 size);
+	void *(*calloc)(emgl_U32 num, emgl_U32 size);
+	void (*free)(void *ptr);
+	void (*log)(const char *, ...);
+	void (*fatal)(const char *, ...);
+} emgl_support_t;
+
+typedef struct {
 	void *api;
 	void(*poll)(void *api);
 	emgl_color_t(*getPixel)(void *api, emgl_coord_t x, emgl_coord_t y);
@@ -24,7 +32,7 @@ typedef struct {
 	void(*getSize)(void *api, emgl_coord_t *width, emgl_coord_t *height);
 } emgl_driverAPI_t;
 
-void emgl_init();
+void emgl_init(const emgl_support_t *support);
 
 void emgl_registerDriver(const emgl_driverAPI_t *driver);
 

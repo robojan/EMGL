@@ -206,7 +206,7 @@ typedef U16 emgl_color_t;
 
 #elif EMGL_INTERNALCOLORMODE == CM_RGBA8888
 #define EMGL_COLOR_BPP (32)
-typedef U32 emgl_color_t;
+typedef emgl_U32 emgl_color_t;
 #define emgl_colorBlend emgl_colorBlendRGBA8888
 
 #define emgl_colorModeGetPixel(data, n) ((data)[n])
@@ -252,12 +252,12 @@ typedef U32 emgl_color_t;
 /*
 * Color blending
 */
-emgl_color_t emgl_colorBlend1BPP(emgl_color_t color1, emgl_color_t color2, U8 mix);
-emgl_color_t emgl_colorBlend8BPP(emgl_color_t color1, emgl_color_t color2, U8 mix);
-emgl_color_t emgl_colorBlendRGB332(emgl_color_t color1, emgl_color_t color2, U8 mix);
-emgl_color_t emgl_colorBlendRGB565(emgl_color_t color1, emgl_color_t color2, U8 mix);
-emgl_color_t emgl_colorBlendRGBA5551(emgl_color_t color1, emgl_color_t color2, U8 mix);
-emgl_color_t emgl_colorBlendRGBA8888(emgl_color_t color1, emgl_color_t color2, U8 mix);
+emgl_color_t emgl_colorBlend1BPP(emgl_color_t color1, emgl_color_t color2, emgl_U8 mix);
+emgl_color_t emgl_colorBlend8BPP(emgl_color_t color1, emgl_color_t color2, emgl_U8 mix);
+emgl_color_t emgl_colorBlendRGB332(emgl_color_t color1, emgl_color_t color2, emgl_U8 mix);
+emgl_color_t emgl_colorBlendRGB565(emgl_color_t color1, emgl_color_t color2, emgl_U8 mix);
+emgl_color_t emgl_colorBlendRGBA5551(emgl_color_t color1, emgl_color_t color2, emgl_U8 mix);
+emgl_color_t emgl_colorBlendRGBA8888(emgl_color_t color1, emgl_color_t color2, emgl_U8 mix);
 
 
 #define COLOR_BLACK           emgl_colorConvFromRGBA8888(0xFF000000)
