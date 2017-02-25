@@ -14,7 +14,7 @@
  */
 #if EMGL_INTERNALCOLORMODE == CM_1BPP
 #define EMGL_COLOR_BPP (1)
-typedef U8 emgl_color_t;
+typedef emgl_U8 emgl_color_t;
 #define emgl_colorBlend emgl_colorBlend1BPP
 
 #define emgl_colorModeGetPixel(data, n) (((data)[(n)/8] >> ((n) & 7)) & 0x1)
@@ -46,7 +46,7 @@ typedef U8 emgl_color_t;
 #define emgl_colorConvToRGBA8888(x)   (((x) & 1) != 0 ? 0xFFFFFFFF : 0)
 #elif EMGL_INTERNALCOLORMODE == CM_8BPP
 #define EMGL_COLOR_BPP (8)
-typedef U8 emgl_color_t;
+typedef emgl_U8 emgl_color_t;
 #define emgl_colorBlend emgl_colorBlend8BPP
 
 #define emgl_colorModeGetPixel(data, n) ((data)[n])
@@ -84,7 +84,7 @@ typedef U8 emgl_color_t;
 
 #elif EMGL_INTERNALCOLORMODE == CM_RGB332
 #define EMGL_COLOR_BPP (8)
-typedef U8 emgl_color_t;
+typedef emgl_U8 emgl_color_t;
 #define emgl_colorBlend emgl_colorBlendRGB332
 
 #define emgl_colorModeGetPixel(data, n) ((data)[n])
@@ -124,7 +124,7 @@ typedef U8 emgl_color_t;
 
 #elif EMGL_INTERNALCOLORMODE == CM_RGB565
 #define EMGL_COLOR_BPP (16)
-typedef U16 emgl_color_t;
+typedef emgl_U16 emgl_color_t;
 #define emgl_colorBlend emgl_colorBlendRGB565
 
 #define emgl_colorModeGetPixel(data, n) ((data)[n])

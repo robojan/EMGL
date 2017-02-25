@@ -7,6 +7,7 @@
 #include <emgl/graphics.h>
 #include <emgl/font.h>
 
+
 typedef struct {
 	void *(*malloc)(emgl_U32 size);
 	void *(*calloc)(emgl_U32 num, emgl_U32 size);
@@ -35,5 +36,8 @@ typedef struct {
 void emgl_init(const emgl_support_t *support);
 
 void emgl_registerDriver(const emgl_driverAPI_t *driver);
+
+extern emgl_driverAPI_t g_emgl_activeDriver;
+extern emgl_support_t g_emgl_support;
 
 #endif

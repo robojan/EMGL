@@ -70,7 +70,7 @@ void CompressBitmap(wxUint8 **buffer, int *bufferSize, int numPixels, enum Outpu
 	for (int i = 0; i < numPixels; ) {
 		wxUint8 value = GET_PIXEL_VALUE(*buffer, i, bpp, mask);
 		wxUint8 valueCount = 0;
-		while (i < numPixels && value == GET_PIXEL_VALUE(*buffer, i, bpp, mask) && valueCount <= 16) {
+		while (i < numPixels && value == GET_PIXEL_VALUE(*buffer, i, bpp, mask) && valueCount < 16) {
 			i++;
 			valueCount++;
 		}

@@ -90,7 +90,7 @@ void emgl_drawGlyph(const EMGL_font_t *font, emgl_U32 code, emgl_coord_t *x, emg
 				glyph->bitmapWidth, glyph->bitmapHeight, foregroundColor, backgroundColor, bitmap);
 		}
 		// draw the bitmap
-		DRIVER->drawBitmap(DRIVER->api, *x + glyph->bearingX, *y - glyph->bitmapHeight + glyph->bearingY,
+		DRIVER.drawBitmap(DRIVER.api, *x + glyph->bearingX, *y - glyph->bitmapHeight + glyph->bearingY,
 			glyph->bitmapWidth, glyph->bitmapHeight, bitmap);
 
 #ifndef EMGL_USE_VLA

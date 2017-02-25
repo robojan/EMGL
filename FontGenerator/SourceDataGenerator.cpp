@@ -266,7 +266,7 @@ wxString CSourceDataGenerator::GetGlyphDataDefinitions(const EMGL_font_t *font)
 			if (ptr == NULL) continue;
 			int dataSize = ptr->bitmapSize& ~(1 << 31);
 			if (dataSize == 0) continue;
-			result += wxString::Format("const static uint8_t glyphData_%d_%d[%d] = {%u", codepage, glyph, dataSize,
+			result += wxString::Format("static const uint8_t glyphData_%d_%d[%d] = {%u", codepage, glyph, dataSize,
 				ptr->bitmapData[0]);
 			for (int i = 1; i < dataSize; ++i) {
 				result += wxString::Format(",%u", ptr->bitmapData[i]);
@@ -286,7 +286,7 @@ wxString CSourceDataGenerator::GetGlyphDefinitions(const EMGL_font_t *font)
 			EMGL_glyph_t *ptr = font->codePagePtrs[codepage].glyphPtrs[glyph];
 			if (ptr == NULL) continue;
 			int dataSize = ptr->bitmapSize& ~(1 << 31);
-			result += wxString::Format("const static EMGL_glyph_t glyph_%d_%d = {%d, %d, %d, %d, %u, %u, %u, ", 
+			result += wxString::Format("static const EMGL_glyph_t glyph_%d_%d = {%d, %d, %d, %d, %u, %u, %u, ", 
 				codepage, glyph, ptr->advanceX, ptr->advanceY, ptr->bearingX, ptr->bearingY, ptr->bitmapWidth, ptr->bitmapHeight, 
 				ptr->bitmapSize);
 			if (dataSize == 0) {
@@ -306,7 +306,7 @@ wxString CSourceDataGenerator::GetGlyphTableDefinition(const EMGL_font_t *font)
 	for (int codepage = 0; codepage < font->numCodepages; ++codepage) {
 		int numGlyphs = font->codePagePtrs[codepage].endCode - font->codePagePtrs[codepage].startCode + 1;
 		if (numGlyphs <= 0) continue;
-		result += wxString::Format("const static EMGL_glyph_t *glyphTable_%d[%d] = { ", codepage, numGlyphs);
+		result += wxString::Format("static const EMGL_glyph_t *glyphTable_%d[%d] = { ", codepage, numGlyphs);
 		if (font->codePagePtrs[codepage].glyphPtrs[0] == NULL) {
 			result += "(void *)0";
 		}
@@ -328,7 +328,7 @@ wxString CSourceDataGenerator::GetGlyphTableDefinition(const EMGL_font_t *font)
 
 wxString CSourceDataGenerator::GetCodepageDefinitions(const EMGL_font_t *font)
 {
-	wxString result = wxString::Format("const static EMGL_codePage_t codePageTable[%d] = {", font->numCodepages);
+	wxString result = wxString::Format("static const EMGL_codePage_t codePageTable[%d] = {", font->numCodepages);
 	bool first = true;
 	for (int codepage = 0; codepage < font->numCodepages; ++codepage) {
 		EMGL_codePage_t *page = &font->codePagePtrs[codepage];

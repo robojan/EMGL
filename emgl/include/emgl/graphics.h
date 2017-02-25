@@ -5,6 +5,7 @@
 #include <emgl/types.h>
 
 void emgl_clear(emgl_color_t clearColor);
+void emgl_setPixel(emgl_coord_t x, emgl_coord_t y, emgl_color_t color);
 void emgl_drawRectangle(emgl_coord_t x, emgl_coord_t y, emgl_coord_t width, emgl_coord_t height, emgl_color_t color);
 void emgl_drawFilledRectangle(emgl_coord_t x, emgl_coord_t y, emgl_coord_t width, emgl_coord_t height, emgl_color_t color);
 void emgl_drawCircle(emgl_coord_t x, emgl_coord_t y, emgl_coord_t r, emgl_color_t color);
@@ -19,7 +20,7 @@ void emgl_drawRoundedRectangle(emgl_coord_t x, emgl_coord_t y, emgl_coord_t widt
 void emgl_drawFilledRoundedRectangle(emgl_coord_t x, emgl_coord_t y, emgl_coord_t width, emgl_coord_t height, emgl_coord_t r, emgl_color_t color);
 void emgl_drawPolygon(emgl_coord_t *x, emgl_coord_t *y, emgl_U8 count, emgl_color_t color);
 void emgl_drawFilledPolygon(emgl_coord_t *x, emgl_coord_t *y, emgl_U8 count, emgl_color_t color);
-void emgl_drawBitmap(emgl_coord_t x, emgl_coord_t y, emgl_coord_t width, emgl_coord_t height, emgl_color_t *data);
+void emgl_drawBitmap(emgl_coord_t x, emgl_coord_t y, emgl_coord_t width, emgl_coord_t height, const emgl_color_t *data);
 void emgl_drawLine(emgl_coord_t x1, emgl_coord_t y1, emgl_coord_t x2, emgl_coord_t y2, emgl_color_t color);
 void emgl_drawBezier(emgl_coord_t *x, emgl_coord_t *y, emgl_U8 count, emgl_color_t color);
 

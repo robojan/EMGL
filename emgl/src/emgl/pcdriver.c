@@ -11,13 +11,13 @@
 const TCHAR g_pcdrv_ClassName [] = TEXT("EMGL class");
 
 struct _pcdrv_status {
-	U32 *lcdBuffer;
+	emgl_U32 *lcdBuffer;
 	HWND hWnd;
 	HGLRC hRC;
 	HDC hDC;
 	GLuint texture;
-	U16 texWidth;
-	U16 texHeight;
+	emgl_U16 texWidth;
+	emgl_U16 texHeight;
 } g_pcdrv_status;
 
 const emgl_driverAPI_t g_pcdrv = {
@@ -42,7 +42,7 @@ void pcdrv_fillRect(void * api, emgl_coord_t x1, emgl_coord_t y1, emgl_coord_t x
 	emgl_coord_t y2, emgl_color_t lcdColor)
 {
 	struct _pcdrv_status *sts = api;
-	U32 color = emgl_colorConvToRGBA8888(lcdColor);
+	emgl_U32 color = emgl_colorConvToRGBA8888(lcdColor);
 	if (x1 > x2)
 	{
 		emgl_coord_t x = x1;
@@ -93,7 +93,7 @@ void pcdrv_drawLineH(void *api, emgl_coord_t x1, emgl_coord_t x2, emgl_coord_t y
 	emgl_color_t lcdColor)
 {
 	struct _pcdrv_status *sts = api;
-	U32 color = emgl_colorConvToRGBA8888(lcdColor);
+	emgl_U32 color = emgl_colorConvToRGBA8888(lcdColor);
 	if (x1 > x2)
 	{
 		emgl_coord_t x = x1;
@@ -149,7 +149,7 @@ void pcdrv_drawLineV(void *api, emgl_coord_t y1, emgl_coord_t y2, emgl_coord_t x
 		y2 = LCD_HEIGHT - 1;
 	}
 
-	U32 color = emgl_colorConvToRGBA8888(lcdColor);
+	emgl_U32 color = emgl_colorConvToRGBA8888(lcdColor);
 	for (emgl_coord_t y = y1; y <= y2; y++)
 	{
 		sts->lcdBuffer[y*LCD_WIDTH + x] = color;
@@ -180,7 +180,7 @@ void pcdrv_setPixel(void * api, emgl_coord_t x, emgl_coord_t y,
 		return;
 	}
 
-	U32 color = emgl_colorConvToRGBA8888(lcdColor);
+	emgl_U32 color = emgl_colorConvToRGBA8888(lcdColor);
 	
 	sts->lcdBuffer[y*LCD_WIDTH + x] = color;
 }
@@ -224,7 +224,7 @@ void pcdrv_drawBitmap(void * api, emgl_coord_t x, emgl_coord_t y, emgl_coord_t w
 	{
 		for (emgl_coord_t ix = startx; ix < endx; ix++)
 		{
-			U32 color = emgl_colorConvToRGBA8888(emgl_colorModeGetPixel(data, iy*width+ix));
+			emgl_U32 color = emgl_colorConvToRGBA8888(emgl_colorModeGetPixel(data, iy*width+ix));
 
 			sts->lcdBuffer[(y + iy)*LCD_WIDTH + (x + ix)] = color;
 		}
@@ -316,7 +316,7 @@ HWND pcdrv_createWindow()
 	return hwnd;
 }
 
-U16 fitPower2(U16 x)
+emgl_U16 fitPower2(emgl_U16 x)
 {
 	for (int i = 14; i >= 0; i--)
 	{
@@ -387,7 +387,7 @@ void pcdrv_init(void *api)
 	// Create buffer for drawing
 	struct _pcdrv_status *sts = api;
 	ZeroMemory(sts, sizeof(struct _pcdrv_status));
-	sts->lcdBuffer = (U32 *) emgl_malloc(LCD_WIDTH*LCD_HEIGHT*sizeof(U32));
+	sts->lcdBuffer = (emgl_U32 *) emgl_malloc(LCD_WIDTH*LCD_HEIGHT*sizeof(emgl_U32));
 	for (int x = 0; x < LCD_WIDTH; x++)
 	{
 		for (int y = 0; y < LCD_HEIGHT; y++)

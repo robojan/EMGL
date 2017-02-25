@@ -27,29 +27,32 @@
 #define EMGL_LOGMOD_FONT          0x40
 
 #ifdef EMGL_LOGMOD_DRIVER_ENABLE
-#define EMGL_LOGMOD_OPTDRIVER EMGL_LOGMOD_DRIVER
+#  define EMGL_LOGMOD_OPTDRIVER   EMGL_LOGMOD_DRIVER
 #else 
-#define EMGL_LOGMOD_OPTDRIVER 0x00
+#  define EMGL_LOGMOD_OPTDRIVER   0x00
 #endif
 #ifdef EMGL_LOGMOD_GRAPHICS_ENABLE
-#define EMGL_LOGMOD_OPTGRAPHICS EMGL_LOGMOD_GRAPHICS
+#  define EMGL_LOGMOD_OPTGRAPHICS EMGL_LOGMOD_GRAPHICS
 #else 
-#define EMGL_LOGMOD_OPTGRAPHICS 0x00
+#  define EMGL_LOGMOD_OPTGRAPHICS 0x00
 #endif
 #ifdef EMGL_LOGMOD_FONT_ENABLE
-#define EMGL_LOGMOD_OPTFONT EMGL_LOGMOD_FONT
+#  define EMGL_LOGMOD_OPTFONT     EMGL_LOGMOD_FONT
 #else 
-#define EMGL_LOGMOD_OPTFONT 0x00
+#  define EMGL_LOGMOD_OPTFONT     0x00
 #endif
 
 #define EMGL_LOGMOD_ENABLED (EMGL_LOGMOD_OPTDRIVER | EMGL_LOGMOD_OPTGRAPHICS | EMGL_LOGMOD_OPTFONT)
 
 #ifdef EMGL_LOG_ENABLED
-#define EMGL_LOG(level, x) do {if((((level)&EMGL_LOGLVL_MASK&EMGL_LOGLVL) != 0) && \
-	((level)&(~EMGL_LOGLVL_MASK)&EMGL_LOGMOD_ENABLED)!= 0) {EMGL_LOG_IMPL(x);} } \
-	while(0)
+#  define EMGL_LOG(level, format, ...) do { \
+		if( (((level) & EMGL_LOGLVL_MASK & EMGL_LOGLVL) != 0) && \
+			((level)&(~EMGL_LOGLVL_MASK)&EMGL_LOGMOD_ENABLED)!= 0) { \
+			EMGL_LOG_IMPL("[EMGL] " format, ##__VA_ARGS__); \
+		} \
+	} while(0)
 #else
-#define EMGL_LOG(level, x) 
+#  define EMGL_LOG(level, format, ...) 
 #endif
 
 #endif

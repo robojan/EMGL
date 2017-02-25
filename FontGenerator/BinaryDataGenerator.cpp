@@ -110,7 +110,20 @@ void BinaryDataGenerator::SaveCharmap(const CharMap &charmap, bool compress,
 			bitmapSize = ConvertToFormat(bitmap, bitmapSize, format);
 
 			if (compress) {
+				wxUint8 *bitmapVerify = new wxUint8[bitmapSize];
+				wxUint8 *bitmapOrig = new wxUint8[bitmapSize];
+				int origSize = bitmapSize;
+				memcpy(bitmapOrig, bitmap, origSize);
 				CompressBitmap(&bitmap, &bitmapSize,  bitmapWidth * bitmapHeight, format);
+				memcpy(bitmapVerify, bitmap, bitmapSize & ~(1<<31));
+				int verifySize = bitmapSize;
+				DecompressBitmap(&bitmapVerify, &verifySize, bitmapWidth * bitmapHeight, format);
+
+				int cmp = memcmp(bitmapOrig, bitmapVerify, bitmapSize & ~(1 << 31));
+				wxASSERT(cmp==0);
+
+				delete[] bitmapVerify;
+				delete[] bitmapOrig;
 			}
 
 			ascender += m_loadedFont.GetAscender();
@@ -147,7 +160,6 @@ void BinaryDataGenerator::SaveCharmap(const CharMap &charmap, bool compress,
 		out.Write32(codepagePtrs[i]);
 	}
 	delete[] codepagePtrs;
-	delete[] glyphPtrs;
 
 	// Write font wide parameters
 	file.SeekO(sizeof(wxUint32));

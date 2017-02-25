@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include <emgl/emgl.h>
 #include <emgl/pcdriver.h>
 
@@ -9,6 +11,14 @@
 
 int main(int argc, char **argv)
 {
+	const emgl_support_t support = {
+		.malloc = malloc,
+		.calloc = calloc,
+		.free = free,
+		.log = printf,
+		.fatal = NULL
+	};
+	emgl_init(&support);
 	const emgl_driverAPI_t *drv = pcdrv_CreateDriver();
 	emgl_registerDriver(drv);
 	emgl_clear(COLOR_WHITE);

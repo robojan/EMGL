@@ -3,6 +3,6 @@
 
 #include <emgl/emgl.h>
 
-extern const emgl_driverAPI_t *g_emgl_activeDriver;
+extern emgl_driverAPI_t g_emgl_activeDriver;
 
 #endif

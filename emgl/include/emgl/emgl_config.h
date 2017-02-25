@@ -11,12 +11,12 @@
  *   - CM_RGBA5551
  *   - CM_RGBA8888
 */
-#define EMGL_INTERNALCOLORMODE CM_RGBA8888
+#define EMGL_INTERNALCOLORMODE CM_RGB565
 /*
  * Scratch buffer size in pixels
  * To use no scratch buffer set to 1
  */
-#define EMGL_SCRATCHBUFFER_SIZE 1
+#define EMGL_SCRATCHBUFFER_SIZE 1024
 
 /*
  * Uncomment to disable assertions
