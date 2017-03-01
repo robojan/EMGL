@@ -13,16 +13,17 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D4B1D9D5-3F77-4AD3-882A-C841C3547153}</ProjectGuid>
     <RootNamespace>emgl</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -73,18 +74,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\arial12.c" />
-    <ClCompile Include="src\arial8.c" />
+    <ClCompile Include="include\emgl\emgl_ui.cpp" />
     <ClCompile Include="src\emgl\color.c" />
     <ClCompile Include="src\emgl\font.c" />
     <ClCompile Include="src\emgl\math.c" />
     <ClCompile Include="src\emgl\emgl.c" />
     <ClCompile Include="src\emgl\graphics.c" />
-    <ClCompile Include="src\images.c" />
-    <ClCompile Include="src\main.c" />
-    <ClCompile Include="src\emgl\pcdriver.c" />
-    <ClCompile Include="src\segoescript10.c" />
-    <ClCompile Include="src\Sylfaen12.c" />
+    <ClCompile Include="src\emgl\ui\basicTypes.cpp" />
+    <ClCompile Include="src\emgl\ui\element.cpp" />
+    <ClCompile Include="src\emgl\ui\PaintContext.cpp" />
+    <ClCompile Include="src\emgl\ui\panel.cpp" />
+    <ClCompile Include="src\emgl\ui\text.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\emgl\debug.h" />
@@ -93,17 +93,12 @@
     <ClInclude Include="include\emgl\driver.h" />
     <ClInclude Include="include\emgl\emgl.h" />
     <ClInclude Include="include\emgl\emgl_config.h" />
+    <ClInclude Include="include\emgl\emgl_ui.h" />
     <ClInclude Include="include\emgl\font.h" />
     <ClInclude Include="include\emgl\graphics.h" />
     <ClInclude Include="include\emgl\impl.h" />
     <ClInclude Include="include\emgl\math.h" />
     <ClInclude Include="include\emgl\types.h" />
-    <ClInclude Include="src\arial12.h" />
-    <ClInclude Include="src\arial8.h" />
-    <ClInclude Include="src\images.h" />
-    <ClInclude Include="include\emgl\pcdriver.h" />
-    <ClInclude Include="src\segoescript10.h" />
-    <ClInclude Include="src\Sylfaen12.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

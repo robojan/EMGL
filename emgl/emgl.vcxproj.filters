@@ -15,15 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\emgl\pcdriver.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\main.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\images.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\emgl\graphics.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -33,29 +24,32 @@
     <ClCompile Include="src\emgl\math.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\arial12.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\emgl\font.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\arial8.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\segoescript10.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Sylfaen12.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\emgl\color.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\emgl\ui\element.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\emgl\ui\basicTypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\emgl\ui\panel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\emgl\ui\PaintContext.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\emgl\emgl_ui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\emgl\ui\text.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\emgl\pcdriver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\emgl\color.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -63,9 +57,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\emgl\emgl_config.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\images.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\emgl\types.h">
@@ -89,19 +80,10 @@
     <ClInclude Include="include\emgl\math.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\arial12.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\emgl\font.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\arial8.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\segoescript10.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Sylfaen12.h">
+    <ClInclude Include="include\emgl\emgl_ui.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
