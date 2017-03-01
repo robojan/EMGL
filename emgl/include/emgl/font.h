@@ -1,6 +1,11 @@
 #ifndef _EMGL_FONT_H_
 #define _EMGL_FONT_H_
 
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <emgl/color.h>
 #include <emgl/types.h>
 
@@ -43,5 +48,10 @@ void emgl_getGlyphColoredBitmap(const emgl_U8 *in, emgl_U32 inSize, emgl_U8 inBp
 	emgl_color_t foregroundColor, emgl_color_t backgroundColor, emgl_color_t *out);
 void emgl_drawGlyph(const EMGL_font_t *font, emgl_U32 glyph, emgl_coord_t *x, emgl_coord_t *y, 
 	emgl_color_t foregroundColor, emgl_color_t backgroundColor);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

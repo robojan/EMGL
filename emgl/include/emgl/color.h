@@ -1,6 +1,11 @@
 #ifndef _EMGL_COLOR_H_
 #define _EMGL_COLOR_H_
 
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <emgl/emgl_config.h>
 #include <emgl/colormode.h>
 #include <emgl/types.h>
@@ -259,6 +264,13 @@ emgl_color_t emgl_colorBlendRGB565(emgl_color_t color1, emgl_color_t color2, emg
 emgl_color_t emgl_colorBlendRGBA5551(emgl_color_t color1, emgl_color_t color2, emgl_U8 mix);
 emgl_color_t emgl_colorBlendRGBA8888(emgl_color_t color1, emgl_color_t color2, emgl_U8 mix);
 
+/*
+ * Color utilities
+ */
+emgl_color_t emgl_colorLighter(emgl_color_t color);
+emgl_color_t emgl_colorDarker(emgl_color_t color);
+emgl_color_t emgl_colorDoubleLighter(emgl_color_t color);
+emgl_color_t emgl_colorDoubleDarker(emgl_color_t color);
 
 #define COLOR_BLACK           emgl_colorConvFromRGBA8888(0xFF000000)
 #define COLOR_SILVER          emgl_colorConvFromRGBA8888(0xFFC0C0C0)
@@ -278,5 +290,8 @@ emgl_color_t emgl_colorBlendRGBA8888(emgl_color_t color1, emgl_color_t color2, e
 #define COLOR_AQUA            emgl_colorConvFromRGBA8888(0xFF00FFFF)
 
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -1,6 +1,11 @@
 #ifndef _EMGL_GRAPHICS_H_
 #define _EMGL_GRAPHICS_H_
 
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <emgl/color.h>
 #include <emgl/types.h>
 
@@ -24,5 +29,8 @@ void emgl_drawBitmap(emgl_coord_t x, emgl_coord_t y, emgl_coord_t width, emgl_co
 void emgl_drawLine(emgl_coord_t x1, emgl_coord_t y1, emgl_coord_t x2, emgl_coord_t y2, emgl_color_t color);
 void emgl_drawBezier(emgl_coord_t *x, emgl_coord_t *y, emgl_U8 count, emgl_color_t color);
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif

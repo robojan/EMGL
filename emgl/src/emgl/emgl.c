@@ -5,8 +5,25 @@
 #include <emgl/emgl.h>
 #include <emgl/debug.h>
 
-emgl_driverAPI_t g_emgl_activeDriver = {NULL};
-emgl_support_t g_emgl_support = { NULL, NULL, NULL, NULL, NULL };
+emgl_driverAPI_t g_emgl_activeDriver = {
+	.api = NULL,
+	.poll = NULL,
+	.getPixel = NULL,
+	.setPixel = NULL,
+	.fillRect = NULL, 
+	.drawLineH = NULL,
+	.drawLineV = NULL,
+	.drawBitmap = NULL,
+	.init = NULL,
+	.getSize = NULL,
+};
+emgl_support_t g_emgl_support = { 
+	.malloc=NULL, 
+	.calloc=NULL,
+	.free=NULL,
+	.log=NULL,
+	.fatal=NULL
+};
 
 static void emgl_default_fillRect(void *api, emgl_coord_t x1, emgl_coord_t y1, emgl_coord_t x2, emgl_coord_t y2,
 	emgl_color_t color)

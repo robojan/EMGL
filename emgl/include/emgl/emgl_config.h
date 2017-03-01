@@ -69,4 +69,12 @@
  */
 //#define EMGL_USE_STANDARD_IMPL 
 
+/*
+ * Default colors / font
+ */
+#define EMGL_DEFAULT_FOREGROUND_COLOR COLOR_BLACK
+#define EMGL_DEFAULT_BACKGROUND_COLOR COLOR_SILVER
+#define EMGL_DEFAULT_FONT emgl_default_font_ptr
+
+#define EMGL_TAB_SIZE 10
 #endif

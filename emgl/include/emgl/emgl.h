@@ -1,6 +1,10 @@
 #ifndef _EMGL_H_
 #define _EMGL_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <emgl/emgl_config.h>
 #include <emgl/types.h>
 #include <emgl/color.h>
@@ -11,9 +15,9 @@
 typedef struct {
 	void *(*malloc)(emgl_U32 size);
 	void *(*calloc)(emgl_U32 num, emgl_U32 size);
-	void (*free)(void *ptr);
-	void (*log)(const char *, ...);
-	void (*fatal)(const char *, ...);
+	void(*free)(void *ptr);
+	void(*log)(const char *, ...);
+	void(*fatal)(const char *, ...);
 } emgl_support_t;
 
 typedef struct {
@@ -39,5 +43,9 @@ void emgl_registerDriver(const emgl_driverAPI_t *driver);
 
 extern emgl_driverAPI_t g_emgl_activeDriver;
 extern emgl_support_t g_emgl_support;
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

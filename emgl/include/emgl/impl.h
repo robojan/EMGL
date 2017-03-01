@@ -1,6 +1,11 @@
 #ifndef _EMGL_IMPL_H_
 #define _EMGL_IMPL_H_
 
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*
 * Memory allocator function
 */
@@ -28,5 +33,10 @@
 #define EMGL_LOGASSERT_IMPL(message) \
 	do { if(g_emgl_support.fatal != NULL) g_emgl_support.fatal("[EMGL] Assertion \"%s\" failed at line %d in %s\n", message, \
 	__LINE__, __FILE__); } while(0)
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

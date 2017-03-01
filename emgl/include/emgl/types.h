@@ -3,11 +3,16 @@
 
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef NULL
 #define NULL 0
 #endif
 
 typedef int_fast16_t emgl_coord_t;
+typedef int_fast16_t emgl_length_t;
 
 typedef uint32_t emgl_U32;
 typedef int32_t emgl_I32;
@@ -15,5 +20,10 @@ typedef uint16_t emgl_U16;
 typedef int32_t emgl_I16;
 typedef uint8_t emgl_U8;
 typedef int8_t emgl_I8;
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
